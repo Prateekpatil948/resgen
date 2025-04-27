@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user_profile.first_name }} {{ user_profile.last_name }} - Resume</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            line-height: 1.5;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 25px;
+            font-size: 13pt;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 20pt;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #2c3e50;
+            padding-bottom: 4px;
+            text-align: center;
+        }
+        h2 {
+            color: #2c3e50;
+            font-size: 15pt;
+            margin-top: 18px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 3px;
+        }
+        .contact-info {
+            text-align: center;
+            margin-bottom: 18px;
+            font-size: 11pt;
+        }
+        .section {
+            margin-bottom: 18px;
+        }
+        .job-title {
+            font-weight: bold;
+            font-size: 12pt;
+            display: flex;
+            justify-content: space-between;
+        }
+        .company {
+            font-style: italic;
+            margin-bottom: 4px;
+            font-size: 11pt;
+        }
+        ul {
+            margin-top: 4px;
+            padding-left: 18px;
+        }
+        li {
+            margin-bottom: 4px;
+            font-size: 11pt;
+        }
+        .skills-list {
+            column-count: 2;
+            column-gap: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>{{ user_profile.first_name }} {{ user_profile.last_name }}</h1>
+    <div class="contact-info">
+        {{ user_profile.phone }} | {{ user_profile.email }} | 
+        {% if user_profile.linkedin_id %}<a href="https://linkedin.com/in/{{ user_profile.linkedin_id }}"  target="_blank"><i class="fab fa-linkedin"></i> {{ user_profile.linkedin_id }}</a>{% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Summary</h2>
+        <p>{{ user_profile.summary }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Education</h2>
+        {% for edu in user_profile.education %}
+        <div class="job-title">
+            <span>{{ edu.degree|default:"Degree" }}, {{ edu.school_college|default:"Institution" }}</span>
+            <span>
+                {% if edu.start_date %}{{ edu.start_date }}{% endif %}
+                {% if edu.end_date %} – {{ edu.end_date }}{% endif %}
+            </span>
+        </div>
+        {% if edu.percentage_cgpa %}<div>Score: {{ edu.percentage_cgpa }}{% if edu.percentage_cgpa|floatformat:"0"|add:"0" <= 10 %} CGPA{% else %}%{% endif %}</div>{% endif %}
+        <br>
+        {% endfor %}
+    </div>
+
+    <div class="section">
+        <h2>Experience</h2>
+        {% for exp in user_profile.experience %}
+        <div class="job-title">
+            <span>{{ exp.role|default:"Position" }}, {{ exp.company_name|default:"Company" }}</span>
+            <span>
+                {% if exp.start_date %}{{ exp.start_date }}{% endif %}
+                {% if exp.end_date %} – {{ exp.end_date }}{% endif %}
+            </span>
+        </div>
+        <ul>
+            {% if exp.description %}
+                {% for bullet in exp.description.splitlines %}
+                    {% if bullet.strip %}<li>{{ bullet }}</li>{% endif %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+        {% endfor %}
+    </div>
+
+    <div class="section">
+        <h2>Skills</h2>
+        <div class="skills-list">
+            <ul>
+                {% for skill in user_profile.skills.splitlines %}
+                    {% if skill.strip %}<li>{{ skill }}</li>{% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Projects</h2>
+        {% for project in user_profile.projects %}
+        <div class="job-title">
+            <span>{{ project.project_name|default:"Project" }}</span>
+            {% if project.start_date or project.end_date %}
+            <span>
+                {% if project.start_date %}{{ project.start_date }}{% endif %}
+                {% if project.end_date %} – {{ project.end_date }}{% endif %}
+            </span>
+            {% endif %}
+        </div>
+        {% if project.tech_stack %}<div>Tech: {{ project.tech_stack }}</div>{% endif %}
+        <ul>
+            {% if project.description %}
+                {% for bullet in project.description.splitlines %}
+                    {% if bullet.strip %}<li>{{ bullet }}</li>{% endif %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+        {% endfor %}
+    </div>
+
+    {% if user_profile.certifications %}
+    <div class="section">
+        <h2>Certifications</h2>
+        <ul>
+            {% for cert in user_profile.certifications.splitlines %}
+                {% if cert.strip %}<li>{{ cert }}</li>{% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    
+
+    
+</body>
+</html>

@@ -1,0 +1,305 @@
+{% extends "pdf/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #6c63ff;
+        --primary-light: #a78bfa;
+        --gradient-1: linear-gradient(135deg, #f0f4ff 0%, #e6edff 100%);
+        --gradient-2: linear-gradient(135deg, #818cf8 0%, #a5b4fc 100%);
+        --gradient-3: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%);
+        --content-bg: #f8fafc;
+        --text-color: #1e293b;
+        --glass-bg: rgba(255, 255, 255, 0.9);
+        --glass-border: rgba(99, 102, 241, 0.1);
+    }
+
+    body {
+        background: var(--gradient-1);
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-color);
+        animation: gradientShift 15s ease infinite;
+        background-size: 200% 200%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .template-preview-container {
+        display: flex;
+        height: calc(100vh - 80px);
+        margin: 20px;
+        background: var(--glass-bg);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+        overflow: hidden;
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--glass-border);
+    }
+    
+    /* Thumbnail Column */
+    .template-thumbnails {
+        width: 25%;
+        padding: 20px;
+        overflow-y: auto;
+        background: rgba(255, 255, 255, 0.7);
+        border-right: 1px solid var(--glass-border);
+    }
+    
+    .template-thumb {
+        cursor: pointer;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        text-align: center;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: 2px solid transparent;
+    }
+    
+    .template-thumb:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.15);
+    }
+    
+    .template-thumb.active {
+        border-color: var(--primary);
+        background: rgba(99, 102, 241, 0.05);
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.1);
+    }
+    
+    .thumbnail-img {
+        width: 100%;
+        max-width: 150px;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .template-thumb:hover .thumbnail-img {
+        transform: scale(1.03);
+    }
+    
+    .template-thumb .name {
+        margin-top: 10px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--text-color);
+    }
+    
+    /* Preview Column */
+    .template-preview {
+        width: 75%;
+        padding: 25px;
+        overflow-y: auto;
+        background: white;
+    }
+    
+    .preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+    }
+    
+    .preview-title {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--primary);
+        position: relative;
+    }
+    
+    .preview-title::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: var(--gradient-2);
+        border-radius: 3px;
+    }
+    
+    .preview-actions {
+        display: flex;
+        gap: 12px;
+    }
+    
+    .btn-primary {
+        background: var(--gradient-2);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(129, 140, 248, 0.3);
+    }
+    
+    .btn-primary:hover {
+        background: var(--gradient-3);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(167, 139, 250, 0.4);
+    }
+    
+    .preview-iframe {
+        width: 100%;
+        /* min-height: 100vh; */
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(240, 240, 250, 0.5);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-light);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .template-preview-container {
+            flex-direction: column;
+            margin: 10px;
+            height: auto;
+        }
+        
+        .template-thumbnails {
+            width: 100%;
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 15px;
+            border-right: none;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .template-thumb {
+            min-width: 120px;
+            margin-right: 15px;
+            margin-bottom: 0;
+        }
+        
+        .thumbnail-img {
+            max-width: 100px;
+        }
+        
+        .template-preview {
+            width: 100%;
+            /* padding: 20px; */
+        }
+        
+        .preview-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .preview-title {
+            font-size: 1.4rem;
+        }
+        
+        .preview-actions {
+            width: 100%;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="template-preview-container">
+    <!-- Thumbnail Column (25%) -->
+    <div class="template-thumbnails">
+        {% for template in templates %}
+        <div class="template-thumb {% if template.id == selected_template %}active{% endif %}" 
+             onclick="location.href='{% url 'template_preview' template.id %}'">
+            <img src="{% static 'images/template' %}{{ template.id }}-thumbnail.png" 
+                 alt="{{ template.name }} Template"
+                 class="thumbnail-img">
+            <div class="name">{{ template.name }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Preview Column (75%) -->
+    <div class="template-preview">
+        <div class="preview-header">
+            <h2 class="preview-title">{{ selected_template_name }} Template Preview</h2>
+            <div class="preview-actions">
+                <a href="{% url 'generate_resume' %}?template={{ selected_template }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Use This Template
+                </a>
+            </div>
+        </div>
+        
+        <iframe src="{% static 'previews/template' %}{{ selected_template }}.html" 
+                class="preview-iframe" 
+                id="templateFrame"></iframe>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Refresh preview button functionality
+    function refreshPreview() {
+        const iframe = document.getElementById('templateFrame');
+        iframe.src = iframe.src; // Reload iframe
+    }
+    
+    // Auto-resize iframe to fit content
+    function resizeIframe() {
+        const iframe = document.getElementById('templateFrame');
+        try {
+            iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+        } catch (e) {
+            // Fallback if cross-origin restrictions prevent access
+            iframe.style.height = '800px';
+        }
+    }
+    
+    // Initialize and set up event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initial resize
+        resizeIframe();
+        
+        // Resize when iframe loads
+        document.getElementById('templateFrame').onload = resizeIframe;
+        
+        // Also resize on window changes
+        window.addEventListener('resize', resizeIframe);
+    });
+</script>
+{% endblock %}

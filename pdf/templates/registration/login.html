@@ -1,0 +1,237 @@
+
+{% extends "pdf/base.html" %}
+{% load static %}
+
+{% block title %}Login | ResGen{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #6c63ff;
+        --primary-light: #a78bfa;
+        --gradient-1: linear-gradient(135deg, #f0f4ff 0%, #e6edff 100%);
+        --gradient-2: linear-gradient(135deg, #818cf8 0%, #a5b4fc 100%);
+        --gradient-3: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%);
+        --content-bg: #f8fafc;
+        --text-color: #1e293b;
+        --glass-bg: rgba(255, 255, 255, 0.9);
+        --glass-border: rgba(99, 102, 241, 0.1);
+    }
+
+    body {
+        background: var(--gradient-1);
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-color);
+        animation: gradientShift 15s ease infinite;
+        background-size: 200% 200%;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 1rem;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 420px;
+        padding: 2.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 20px;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .auth-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(99, 102, 241, 0.15);
+    }
+
+    .auth-header {
+        margin-bottom: 2rem;
+    }
+
+    .auth-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--primary);
+        position: relative;
+    }
+
+    .auth-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background: var(--gradient-2);
+        border-radius: 3px;
+    }
+
+    .auth-subtitle {
+        font-size: 1rem;
+        color: #64748b;
+        line-height: 1.5;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-color);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .btn {
+        padding: 0.75rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border: none;
+        width: 100%;
+    }
+
+    .btn-primary {
+        background: var(--gradient-2);
+        color: white;
+        box-shadow: 0 4px 15px rgba(129, 140, 248, 0.3);
+    }
+
+    .btn-primary:hover {
+        background: var(--gradient-3);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(167, 139, 250, 0.4);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: var(--primary);
+        border: 1px solid #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+        background: #f8fafc;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border-color: #cbd5e1;
+    }
+
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+
+    .alert-danger {
+        background: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+    }
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @media (max-width: 480px) {
+        .auth-card {
+            padding: 1.75rem 1.5rem;
+        }
+        
+        .auth-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Login to access your resume builder</p>
+        </div>
+
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                Your username and password didn't match. Please try again.
+            </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username" class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" id="id_username" required>
+            </div>
+            <div class="form-group">
+                <label for="id_password" class="form-label">Password</label>
+                <div class="input-group">
+                    <input type="password" name="password" class="form-control" id="id_password" required>
+                    <button class="toggle-password" type="button">👁️</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+            <div class="form-group">
+                <a href="{% url 'signup' %}" class="btn btn-secondary">Create Account</a>
+            </div>
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
+</div>
+
+
+<script>
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+    });
+    </script>
+{% endblock %}

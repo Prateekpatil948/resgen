@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Doe - Resume</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --text: #333;
+        }
+        
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            line-height: 1.5;
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .resume-container {
+            display: flex;
+            width: 100%;
+            flex-grow: 1;
+        }
+        
+        .sidebar {
+            background: var(--primary);
+            color: white;
+            padding: 25px;
+            width: 30%;
+        }
+        
+        .main {
+            padding: 25px;
+            width: 70%;
+            flex-grow: 1;
+        }
+        
+        h1 {
+            color: white;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .section-content {
+            margin-bottom: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .section-item {
+            margin-bottom: 15px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .side-section-header {
+            font-size: 1rem;
+            margin-top: 25px;
+            margin-bottom: 8px;
+            color: whitesmoke;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .section-date {
+            color: #666;
+            font-size: 0.75rem;
+        }
+        
+        .section-subtitle {
+            font-style: italic;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+        }
+        
+        .divider {
+            border: 0;
+            height: 1px;
+            background: #eee;
+            margin: 15px 0;
+        }
+        
+        a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .contact-info p {
+            margin: 6px 0;
+            font-size: 0.75rem;
+        }
+        
+        .footer {
+            border-top: 1px solid #eee;
+            padding: 10px 25px;
+            text-align: right;
+            background: #f9f9f9;
+        }
+        
+        
+
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            .page {
+                box-shadow: none;
+                border: none;
+            }
+            .footer {
+                display: none;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="page">
+        <div class="resume-container">
+            <div class="sidebar">
+                <h1>John Doe</h1>
+                
+                <div class="contact-info">
+                    <p><i class="fas fa-envelope"></i> john.doe@example.com</p>
+                    <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <p><i class="fab fa-linkedin"></i> <a href="https://linkedin.com/in/johndoe">linkedin.com/in/johndoe</a></p>
+                </div>
+
+                <hr class="divider">
+
+                <h2 class="side-section-header">Education</h2>
+                <div class="side-section-header">
+                    <div class="section-header">
+                        <div class="section-title">Bachelor of Science in Computer Science</div>
+                        <div class="section-date">2015 – 2019</div>
+                    </div>
+                    <div class="section-subtitle">Stanford University</div>
+                    <div class="section-content">GPA: 3.8/4.0</div>
+                </div>
+                <hr class="divider">
+
+                <h2 class="side-section-header">Certifications</h2>
+                <div class="section-content">
+                    <p>AWS Certified Developer - Associate</p>
+                    <p>Google Cloud Professional Architect</p>
+                </div>
+                
+                
+
+                
+            </div>
+
+            <div class="main">
+                <section>
+                    <h2>Summary</h2>
+                    <p>Experienced software engineer with 5+ years of experience in full-stack development. 
+                    Specialized in JavaScript frameworks and cloud technologies with a passion for building 
+                    scalable web applications.</p>
+                </section>
+                
+
+                <h2 class="section-item">Skills</h2>
+                
+                <div class="section-content">
+                    <p><strong>Technical:</strong></p>
+                    <p>JavaScript (ES6+)<br>
+                    React & Redux<br>
+                    Node.js<br>
+                    Python<br>
+                    AWS<br>
+                    Docker<br>
+                    SQL/NoSQL<br>
+                    Git</p>
+                </div>
+
+
+               
+                
+                <h2>Experience</h2>
+                <div class="section-item">
+                    <div class="section-header">
+                        <div class="section-title">Tech Solutions Inc.</div>
+                        <div class="section-date">2020 – Present</div>
+                    </div>
+                    <div class="section-subtitle">Senior Software Engineer</div>
+                    <div class="section-content">
+                        • Lead development team building enterprise SaaS solutions<br>
+                        • Implemented microservices architecture improving system performance by 40%<br>
+                        • Mentored junior developers and conducted code reviews
+                    </div>
+                </div>
+                <hr class="divider">
+                <div class="section-item">
+                    <div class="section-header">
+                        <div class="section-title">Digital Innovations</div>
+                        <div class="section-date">2019 – 2020</div>
+                    </div>
+                    <div class="section-subtitle">Junior Developer</div>
+                    <div class="section-content">
+                        • Developed and maintained web applications using React and Node.js<br>
+                        • Collaborated with cross-functional teams to deliver client projects
+                    </div>
+                </div>
+                <hr class="divider">
+                
+                <h2>Projects</h2>
+                <div class="section-item">
+                    <div class="section-header">
+                        <div class="section-title">E-commerce Platform</div>
+                    </div>
+                    <div class="section-content">
+                        • Built full-stack e-commerce solution with payment integration<br>
+                        • Implemented inventory management system<br>
+                        • Reduced checkout time by 30% through performance optimization<br><br>
+                        <strong>Tech Stack:</strong> React, Node.js, MongoDB
+                    </div>
+                </div>
+                <hr class="divider">
+                
+                
+            </div>
+        </div>
+        
+        
+    </div>
+</body>
+</html>

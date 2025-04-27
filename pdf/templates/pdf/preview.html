@@ -1,0 +1,429 @@
+{% extends 'pdf/base.html' %}
+{% load static %}
+
+{% block title %}Resume Preview{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #6c63ff;
+        --primary-light: #a78bfa;
+        --primary-lighter: #c4b5fd;
+        --content-bg: #f8fafc;
+        --text-color: #1e293b;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+        --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+        --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --nav-height: 60px; /* Adjust this to match your navbar height */
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-color);
+        background-color: var(--content-bg);
+        line-height: 1.5;
+        padding-top: var(--nav-height); /* Push content below navbar */
+    }
+
+    .preview-container {
+        display: flex;
+        min-height: calc(100vh - var(--nav-height)); /* Account for navbar */
+    }
+
+    /* Sidebar Styles */
+    .template-sidebar {
+        width: 280px;
+        padding: 1.5rem;
+        background: white;
+        border-right: 1px solid var(--border-color);
+        overflow-y: auto;
+        position: sticky;
+        top: var(--nav-height); /* Stick below navbar */
+        height: calc(100vh - var(--nav-height)); /* Full height minus nav */
+    }
+
+    .sidebar-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+        color: var(--primary-light);
+        transform: translateX(-2px);
+    }
+
+    .sidebar-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0.5rem 0;
+        color: var(--text-color);
+    }
+
+    .selected-template {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .selected-template img {
+        width: 100%;
+        max-width: 200px;
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-sm);
+        margin: 0 auto 1rem;
+        display: block;
+        border: 1px solid var(--border-color);
+    }
+
+    .template-name {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--text-color);
+    }
+
+    .profile-info {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .template-options {
+        margin-top: 1.5rem;
+    }
+
+    .options-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .template-thumbnails {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .template-thumbnail {
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .template-thumbnail:hover {
+        transform: translateY(-3px);
+    }
+
+    .template-thumbnail img {
+        width: 100%;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+    }
+
+    .template-thumbnail.active img {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px var(--primary-lighter);
+    }
+
+    .template-thumbnail span {
+        display: block;
+        text-align: center;
+        font-size: 0.75rem;
+        margin-top: 0.5rem;
+        color: var(--text-muted);
+    }
+
+    /* Preview Panel Styles */
+    .template-preview {
+        flex: 1;
+        padding: 1.5rem;
+        background: #f9fafb;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .preview-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-color);
+        margin: 0;
+    }
+
+    .preview-actions {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-sm);
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+
+    .primary-btn {
+        background: var(--primary);
+        color: white;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .primary-btn:hover {
+        background: var(--primary-light);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .secondary-btn {
+        background: white;
+        color: var(--primary);
+        border: 1px solid var(--border-color);
+    }
+
+    .secondary-btn:hover {
+        background: #f8fafc;
+        border-color: var(--primary-lighter);
+    }
+
+    .preview-content {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .preview-wrapper {
+        width: 100%;
+        max-width: 800px;
+        box-shadow: var(--shadow-md);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        background: white;
+    }
+
+    .preview-frame {
+        width: 100%;
+        height: 100%;
+        min-height: 70vh;
+        border: none;
+        display: block;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+        body {
+            padding-top: 0;
+        }
+        
+        .preview-container {
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .template-sidebar {
+            width: 100%;
+            height: auto;
+            position: static;
+            border-right: none;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .template-thumbnails {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .template-thumbnails {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .preview-actions {
+            flex-direction: row;
+            width: auto;
+        }
+
+        .preview-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .template-thumbnails {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .action-btn {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .preview-header {
+            align-items: stretch;
+        }
+
+        .preview-actions {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .action-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="preview-container">
+    <div class="template-sidebar">
+        <div class="sidebar-header">
+            <a href="{% url 'list' %}" class="action-btn primary-btn">
+                <i class="fas fa-arrow-left"></i> Back to Resumes
+            </a><br>
+            <!-- <h2 class="sidebar-title">Resume Preview</h2> -->
+             <br>
+            <h5 class="sidebar-title"> Selected Template</h5>
+        </div>
+
+        <div class="selected-template">
+            <img src="{% static 'images/template' %}{{ current_template }}-thumbnail.png" alt="Selected Template">
+            <div class="template-name">
+                {% if current_template == '1' %}Classic
+                {% elif current_template == '2' %}Modern
+                {% elif current_template == '3' %}Professional
+                {% elif current_template == '4' %}Elegant
+                {% elif current_template == '5' %}Creative
+                {% endif %} Template
+            </div>
+            <div class="profile-info">
+                <strong>{{ user_profile.first_name }} {{ user_profile.last_name }}</strong><br>
+                <small>{{ user_profile.email }}</small>
+            </div>
+        </div>
+
+        <div class="template-options">
+            <h4 class="options-title">Choose Template</h4>
+            <div class="template-thumbnails">
+                <a href="?template=1" class="template-thumbnail {% if current_template == '1' %}active{% endif %}">
+                    <img src="{% static 'images/template1-thumbnail.png' %}" alt="Classic Template">
+                    <span>Classic</span>
+                </a>
+                <a href="?template=2" class="template-thumbnail {% if current_template == '2' %}active{% endif %}">
+                    <img src="{% static 'images/template2-thumbnail.png' %}" alt="Modern Template">
+                    <span>Modern</span>
+                </a>
+                <a href="?template=3" class="template-thumbnail {% if current_template == '3' %}active{% endif %}">
+                    <img src="{% static 'images/template3-thumbnail.png' %}" alt="Professional Template">
+                    <span>Professional</span>
+                </a>
+                <a href="?template=4" class="template-thumbnail {% if current_template == '4' %}active{% endif %}">
+                    <img src="{% static 'images/template4-thumbnail.png' %}" alt="Elegant Template">
+                    <span>Elegant</span>
+                </a>
+                <a href="?template=5" class="template-thumbnail {% if current_template == '5' %}active{% endif %}">
+                    <img src="{% static 'images/template5-thumbnail.png' %}" alt="Creative Template">
+                    <span>Creative</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="template-preview">
+        <div class="preview-header">
+            <h3 class="preview-title">Preview</h3>
+            <div class="preview-actions">
+                <a href="/download/{{ user_profile.id }}?template={{ current_template }}" class="action-btn primary-btn">
+                    <i class="fas fa-download"></i> Download
+                </a>
+                <a href="/generate/resume/?profile_id={{ user_profile.id }}&template={{ current_template }}" class="action-btn secondary-btn">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+            </div>
+        </div>
+        
+        <div class="preview-content">
+            <div class="preview-wrapper">
+                <iframe class="preview-frame" src="/preview/{{ user_profile.id }}/?template={{ current_template }}&template_only=true"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-resize iframe to content
+    function resizeIframe() {
+        const iframe = document.querySelector('.preview-frame');
+        try {
+            if (iframe.contentWindow.document.body) {
+                const height = iframe.contentWindow.document.body.scrollHeight;
+                iframe.style.height = Math.max(height, 600) + 'px';
+            }
+        } catch (e) {
+            console.log('Iframe resize error:', e);
+        }
+    }
+
+    // Resize when iframe loads
+    document.querySelector('.preview-frame').addEventListener('load', function() {
+        resizeIframe();
+        // Check again after a delay to account for dynamic content
+        setTimeout(resizeIframe, 500);
+    });
+
+    // Also resize on window resize
+    window.addEventListener('resize', resizeIframe);
+
+    // Handle template thumbnail clicks
+    document.querySelectorAll('.template-thumbnail').forEach(thumbnail => {
+        thumbnail.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = this.getAttribute('href');
+            window.location.href = url;
+        });
+    });
+</script>
+{% endblock %}

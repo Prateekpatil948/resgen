@@ -1,0 +1,764 @@
+{% if request.GET.template == '2' %}
+    <!-- Template 2 (Modern) Preview -->
+    <div class="template-2-preview">
+        <div class="sidebar">
+            <div class="name" id="preview-name">
+                {% if is_edit %}{{ profile.first_name }} {{ profile.last_name }}{% else %}[Your Name]{% endif %}
+            </div>
+            
+            <div class="section">
+                <div class="side-section-header">CONTACT</div>
+                <div class="contact-info" id="preview-contact">
+                    <div class="contact-item"><i class="fas fa-phone me-2"></i> 
+                        <span id="preview-phone">{% if is_edit %}{{ profile.phone }}{% else %}[Phone]{% endif %}</span>
+                    </div>
+                    <div class="contact-item"><i class="fas fa-envelope me-2"></i> 
+                        <span id="preview-email">{% if is_edit %}{{ profile.email }}{% else %}[Email]{% endif %}</span>
+                    </div>
+                    <div class="contact-item"><i class="fab fa-linkedin me-2"></i> 
+                        <span id="preview-linkedin">{% if is_edit %}{{ profile.linkedin_id }}{% else %}[LinkedIn]{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="side-section-header">EDUCATION</div>
+                <div id="preview-education">
+                    {% if is_edit and profile.education %}
+                        {% for edu in profile.education %}
+                            <div class="item">
+                                <div class="item-title">{{ edu.degree }}</div>
+                                <div class="item-subtitle">{{ edu.school_college }}</div>
+                                <div class="item-dates">{{ edu.start_date }} - {{ edu.end_date }}</div>
+                                {% if edu.percentage_cgpa %}<div class="item-subtitle">{{ edu.percentage_cgpa }}</div>{% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="item">
+                            <div class="item-title">[Degree]</div>
+                            <div class="item-subtitle">[Institution]</div>
+                            <div class="item-dates">[Start] - [End]</div>
+                            <div class="item-subtitle">[GPA]</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="side-section-header">CERTIFICATIONS</div>
+                <div class="skills" id="preview-certifications">
+                    {% if is_edit %}{{ profile.certifications }}{% else %}[Your certifications]{% endif %}
+                </div>
+            </div>
+            
+            
+
+        </div>
+        <div class="main-content">
+            <div class="section">
+                <div class="section-title">PROFILE</div>
+                <div class="item-description" id="preview-objective">
+                    {% if is_edit %}{{ profile.summary }}{% else %}[Your professional summary]{% endif %}
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">SKILLS</div><hr>
+                <div class="skills" id="preview-skills">
+                    {% if is_edit %}{{ profile.skills }}{% else %}[Your skills]{% endif %}
+                </div>
+            </div>
+            
+            
+            
+            <div class="section">
+                <div class="section-title">EXPERIENCE</div>
+                <div id="preview-experience">
+                    {% if is_edit and profile.experience %}
+                        {% for exp in profile.experience %}
+                            <div class="item">
+                                <div class="item-title">{{ exp.role }}</div>
+                                <div class="item-subtitle">{{ exp.company_name }}</div>
+                                <div class="item-dates">{{ exp.start_date }} - {{ exp.end_date }}</div>
+                                {% if exp.description %}<div class="item-description">{{ exp.description }}</div>{% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="item">
+                            <div class="item-title">[Position]</div>
+                            <div class="item-subtitle">[Company]</div>
+                            <div class="item-dates">[Start] - [End]</div>
+                            <div class="item-description">[Description]</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">PROJECTS</div>
+                <div id="preview-projects">
+                    {% if is_edit and profile.projects %}
+                        {% for proj in profile.projects %}
+                            <div class="item">
+                                <div class="item-title">{{ proj.project_name }}</div>
+                                {% if proj.tech_stack %}<div class="item-subtitle">{{ proj.tech_stack }}</div>{% endif %}
+                                {% if proj.description %}<div class="item-description">{{ proj.description }}</div>{% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="item">
+                            <div class="item-title">[Project Name]</div>
+                            <div class="item-subtitle">[Technologies]</div>
+                            <div class="item-description">[Description]</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+{% elif request.GET.template == '3' %}
+    <!-- Template 3 (Professional) Preview -->
+    <div class="template-3-preview">
+        <div class="preview-header">
+            <div>
+                <div class="preview-name" id="preview-name">
+                    {% if is_edit %}{{ profile.first_name }} {{ profile.last_name }}{% else %}[Your Name]{% endif %}
+                </div>
+            </div>
+            <div class="preview-contact" id="preview-contact">
+                <div>
+                    {% if is_edit %}
+                        {{ profile.phone }} | {{ profile.email }}
+                    {% else %}
+                        [Phone] | [Email]
+                    {% endif %}
+                </div>
+                <div class="social-links">
+                    {% if is_edit and profile.linkedin_id %}
+                        <a href="https://linkedin.com/in/{{ profile.linkedin_id }}" class="social-link" target="_blank">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                    {% else %}
+                        <span>[LinkedIn]</span>
+                    {% endif %}
+                    
+                </div>
+            </div>
+        </div>
+        
+        {% if is_edit and profile.summary %}
+        <div class="preview-section">
+            <div class="preview-section-title">Summary</div>
+            <div class="preview-item-content" id="preview-objective">
+                {{ profile.summary }}
+            </div>
+        </div>
+        {% else %}
+        <div class="preview-section">
+            <div class="preview-section-title">Summary</div>
+            <div class="preview-item-content" id="preview-objective">
+                [Your professional summary]
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Education</div>
+            <div id="preview-education">
+                {% if is_edit and profile.education %}
+                    {% for edu in profile.education %}
+                    <div class="preview-item">
+                        <div class="preview-item-header">
+                            <span class="preview-item-title">{{ edu.degree }}</span>
+                            <span class="preview-item-date">
+                                {{ edu.start_date }} – {{ edu.end_date }}
+                            </span>
+                        </div>
+                        <div class="preview-item-subtitle">{{ edu.school_college }}</div>
+                        {% if edu.percentage_cgpa %}
+                        <div class="preview-item-content">GPA: {{ edu.percentage_cgpa }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="preview-item">
+                        <div class="preview-item-header">
+                            <span class="preview-item-title">[Degree]</span>
+                            <span class="preview-item-date">[Start] – [End]</span>
+                        </div>
+                        <div class="preview-item-subtitle">[Institution]</div>
+                        <div class="preview-item-content">GPA: [GPA]</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Experience</div>
+            <div id="preview-experience">
+                {% if is_edit and profile.experience %}
+                    {% for exp in profile.experience %}
+                    <div class="preview-item">
+                        <div class="preview-item-header">
+                            <span class="preview-item-title">{{ exp.role }}</span>
+                            <span class="preview-item-date">
+                                {{ exp.start_date }} – {{ exp.end_date }}
+                            </span>
+                        </div>
+                        <div class="preview-item-subtitle">{{ exp.company_name }}</div>
+                        <div class="preview-item-content">
+                            <ul>
+                                {% if exp.description %}
+                                    {% for bullet in exp.description.splitlines %}
+                                        {% if bullet.strip %}<li>{{ bullet }}</li>{% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="preview-item">
+                        <div class="preview-item-header">
+                            <span class="preview-item-title">[Position]</span>
+                            <span class="preview-item-date">[Start] – [End]</span>
+                        </div>
+                        <div class="preview-item-subtitle">[Company]</div>
+                        <div class="preview-item-content">
+                            <ul>
+                                <li>[Description]</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Skills</div>
+            <div class="preview-skills" id="preview-skills">
+                {% if is_edit %}
+                    {% for skill in profile.skills.splitlines %}
+                        {% if skill.strip %}<span class="skill-tag">{{ skill }}</span>{% endif %}
+                    {% endfor %}
+                {% else %}
+                    <span class="skill-tag">[Your skills]</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Projects</div>
+            <div id="preview-projects">
+                {% if is_edit and profile.projects %}
+                    {% for project in profile.projects %}
+                    <div class="preview-item">
+                        <div class="preview-item-header">
+                            <span class="preview-item-title">{{ project.project_name }}</span>
+                        </div>
+                        {% if project.tech_stack %}
+                        <div class="preview-item-subtitle">Tech: {{ project.tech_stack }}</div>
+                        {% endif %}
+                        <div class="preview-item-content">
+                            <ul>
+                                {% if project.description %}
+                                    {% for bullet in project.description.splitlines %}
+                                        {% if bullet.strip %}<li>{{ bullet }}</li>{% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="preview-item">
+                        <div class="preview-item-header">
+                            <span class="preview-item-title">[Project Name]</span>
+                        </div>
+                        <div class="preview-item-subtitle">Tech: [Technologies]</div>
+                        <div class="preview-item-content">
+                            <ul>
+                                <li>[Description]</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if is_edit and profile.certifications %}
+        <div class="preview-section">
+            <div class="preview-section-title">Certifications</div>
+            <div class="preview-item-content" id="preview-certifications">
+                <ul>
+                    {% for cert in profile.certifications.splitlines %}
+                        {% if cert.strip %}<li>{{ cert }}</li>{% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% else %}
+        <div class="preview-section">
+            <div class="preview-section-title">Certifications</div>
+            <div class="preview-item-content" id="preview-certifications">
+                <ul>
+                    <li>[Your certifications]</li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+{% elif request.GET.template == '4' %}
+    <!-- Template 4 (Academic) Preview -->
+    <div class="template-4-preview">
+        <h1 id="preview-name">
+            {% if is_edit %}{{ profile.first_name }} {{ profile.last_name }}{% else %}[Your Name]{% endif %}
+        </h1>
+        
+        <div class="contact-info" id="preview-contact">
+            {% if is_edit %}
+                {{ profile.phone }} | {{ profile.email }}
+                {% if profile.linkedin_id %} | <a href="https://linkedin.com/in/{{ profile.linkedin_id }}" target="_blank">{{ profile.linkedin_id }}</a>{% endif %}
+            {% else %}
+                [Phone] | [Email] | [LinkedIn]
+            {% endif %}
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section">
+            <h2>Professional Summary</h2>
+            <div id="preview-objective">
+                {% if is_edit %}{{ profile.summary }}{% else %}[Your professional summary]{% endif %}
+            </div>
+            
+            {% if is_edit and profile.skills %}
+            <div>
+                <em>Key skills include:</em>
+                <ul class="skills-list" id="preview-skills">
+                    {% for skill in profile.skills.splitlines %}
+                        {% if skill.strip %}<li>{{ skill }}</li>{% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% else %}
+            <div>
+                <em>Key skills include:</em>
+                <ul class="skills-list" id="preview-skills">
+                    <li>[Your skills]</li>
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section">
+            <h2>Professional Experience</h2>
+            <div id="preview-experience">
+                {% if is_edit and profile.experience %}
+                    {% for exp in profile.experience %}
+                    <div class="company">
+                        {{ exp.company_name }}, {{ exp.location|default:"[Location]" }}
+                    </div>
+                    <div class="job-title">
+                        <span>{{ exp.role }}</span>
+                        <span>
+                            {{ exp.start_date }} – {{ exp.end_date }}
+                        </span>
+                    </div>
+                    <ul>
+                        {% if exp.description %}
+                            {% for bullet in exp.description.splitlines %}
+                                {% if bullet.strip %}<li>{{ bullet }}</li>{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    {% endfor %}
+                {% else %}
+                    <div class="company">
+                        [Company], [Location]
+                    </div>
+                    <div class="job-title">
+                        <span>[Position]</span>
+                        <span>[Start] – [End]</span>
+                    </div>
+                    <ul>
+                        <li>[Description]</li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Education</h2>
+            <div id="preview-education">
+                {% if is_edit and profile.education %}
+                    {% for edu in profile.education %}
+                    <div class="education-title">
+                        <span>{{ edu.school_college }}</span>
+                        <span>
+                            {{ edu.start_date }} – {{ edu.end_date }}
+                        </span>
+                    </div>
+                    <div class="education-detail">{{ edu.degree }}</div>
+                    {% if edu.percentage_cgpa %}<div>Score: {{ edu.percentage_cgpa }}{% if edu.percentage_cgpa|floatformat:"0"|add:"0" <= 10 %} CGPA{% else %}%{% endif %}</div>{% endif %}
+                    <br>
+                    {% endfor %}
+                {% else %}
+                    <div class="education-title">
+                        <span>[Institution]</span>
+                        <span>[Start] – [End]</span>
+                    </div>
+                    <div class="education-detail">[Degree]</div>
+                    <div>Score: [GPA]</div>
+                    <br>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if is_edit and profile.projects or not is_edit %}
+        <div class="section">
+            <h2>Projects</h2>
+            <div id="preview-projects">
+                {% if is_edit and profile.projects %}
+                    {% for project in profile.projects %}
+                    <div class="job-title">
+                        <span>{{ project.project_name }}</span>
+                        {% if project.start_date or project.end_date %}
+                        <span>
+                            {% if project.start_date %}{{ project.start_date }}{% endif %}
+                            {% if project.end_date %} – {{ project.end_date }}{% endif %}
+                        </span>
+                        {% endif %}
+                    </div>
+                    {% if project.tech_stack %}<div class="company">Technologies: {{ project.tech_stack }}</div>{% endif %}
+                    <ul>
+                        {% if project.description %}
+                            {% for bullet in project.description.splitlines %}
+                                {% if bullet.strip %}<li>{{ bullet }}</li>{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    {% endfor %}
+                {% else %}
+                    <div class="job-title">
+                        <span>[Project Name]</span>
+                        <span>[Start] – [End]</span>
+                    </div>
+                    <div class="company">Technologies: [Technologies]</div>
+                    <ul>
+                        <li>[Description]</li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if is_edit and profile.certifications or not is_edit %}
+        <div class="section">
+            <h2>Certifications</h2>
+            <div id="preview-certifications">
+                <ul>
+                    {% if is_edit and profile.certifications %}
+                        {% for cert in profile.certifications.splitlines %}
+                            {% if cert.strip %}<li>{{ cert }}</li>{% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <li>[Your certifications]</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+{% elif request.GET.template == '5' %}
+    <!-- Template 5 (Two-column) Preview -->
+    <div class="template-5-preview">
+        <div class="header">
+            <h1 id="preview-name">
+                {% if is_edit %}{{ profile.first_name }} {{ profile.last_name }}{% else %}[Your Name]{% endif %}
+            </h1>
+            <div class="contact-info" id="preview-contact">
+                <div class="contact-item">
+                    <span class="icon"><i class="fas fa-phone"></i></span>
+                    {% if is_edit %}{{ profile.phone }}{% else %}[Phone]{% endif %}
+                </div>
+                <div class="contact-item">
+                    <span class="icon"><i class="fas fa-envelope"></i></span>
+                    {% if is_edit %}{{ profile.email }}{% else %}[Email]{% endif %}
+                </div>
+                {% if is_edit and profile.linkedin_id %}
+                <div class="contact-item">
+                    <span class="icon"><i class="fab fa-linkedin"></i></span>
+                    linkedin.com/in/{{ profile.linkedin_id }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Summary</h2>
+            <p id="preview-objective">
+                {% if is_edit %}{{ profile.summary }}{% else %}[Your professional summary]{% endif %}
+            </p>
+        </div>
+
+        <div class="horizontal-line"></div>
+
+        <div class="two-columns">
+            <div class="left-column">
+                <h2>Education</h2>
+                <div id="preview-education">
+                    {% if is_edit and profile.education %}
+                        {% for edu in profile.education %}
+                        <div class="education-item">
+                            <div class="job-title">
+                                <span>{{ edu.degree }}</span>
+                                <span>
+                                    {{ edu.start_date }} – {{ edu.end_date }}
+                                </span>
+                            </div>
+                            <div class="company">
+                                {{ edu.school_college }}
+                            </div>
+                            {% if edu.percentage_cgpa %}<div>Score: {{ edu.percentage_cgpa }}{% if edu.percentage_cgpa|floatformat:"0"|add:"0" <= 10 %} CGPA{% else %}%{% endif %}</div>{% endif %}
+                            {% if not forloop.last %}<br>{% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="education-item">
+                            <div class="job-title">
+                                <span>[Degree]</span>
+                                <span>[Start] – [End]</span>
+                            </div>
+                            <div class="company">
+                                [Institution]
+                            </div>
+                            <div>Score: [GPA]</div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if is_edit and profile.certifications or not is_edit %}
+                <h2>Certifications</h2>
+                <ul id="preview-certifications">
+                    {% if is_edit and profile.certifications %}
+                        {% for cert in profile.certifications.splitlines %}
+                            {% if cert.strip %}<li>{{ cert }}</li>{% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <li>[Your certifications]</li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+
+                
+                
+                
+            </div>
+
+            <div class="right-column">
+                <h2>Skills</h2>
+                <div class="skills-list" id="preview-skills">
+                    <ul>
+                        {% if is_edit and profile.skills %}
+                            {% for skill in profile.skills.splitlines %}
+                                {% if skill.strip %}<li>{{ skill }}</li>{% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <li>[Your skills]</li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <h2>Experience</h2>
+                <div id="preview-experience">
+                    {% if is_edit and profile.experience %}
+                        {% for exp in profile.experience %}
+                        <div class="experience-item">
+                            <div class="job-title">
+                                <span>{{ exp.role }}, {{ exp.company_name }}</span>
+                                <span>
+                                    {{ exp.start_date }} – {{ exp.end_date }}
+                                </span>
+                            </div>
+                            <ul>
+                                {% if exp.description %}
+                                    {% for bullet in exp.description.splitlines %}
+                                        {% if bullet.strip %}<li>{{ bullet }}</li>{% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="experience-item">
+                            <div class="job-title">
+                                <span>[Position], [Company]</span>
+                                <span>[Start] – [End]</span>
+                            </div>
+                            <ul>
+                                <li>[Description]</li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <h2>Projects</h2>
+                <div id="preview-projects">
+                    {% if is_edit and profile.projects %}
+                        {% for project in profile.projects %}
+                        <div class="project-item">
+                            <div class="job-title">
+                                <span>{{ project.project_name }}</span>
+                                {% if project.start_date or project.end_date %}
+                                <span>
+                                    {{ project.start_date }} – {{ project.end_date }}
+                                </span>
+                                {% endif %}
+                            </div>
+                            {% if project.tech_stack %}<div>Tech: {{ project.tech_stack }}</div>{% endif %}
+                            <ul>
+                                {% if project.description %}
+                                    {% for bullet in project.description.splitlines %}
+                                        {% if bullet.strip %}<li>{{ bullet }}</li>{% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="project-item">
+                            <div class="job-title">
+                                <span>[Project Name]</span>
+                                <span>[Start] – [End]</span>
+                            </div>
+                            <div>Tech: [Technologies]</div>
+                            <ul>
+                                <li>[Description]</li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% else %}
+    <!-- Default Template 1 (Classic) Preview -->
+    <div class="template-1-preview">
+        <div class="header">
+            <div class="name" id="preview-name">
+                {% if is_edit %}{{ profile.first_name }} {{ profile.last_name }}{% else %}[Your Name]{% endif %}
+            </div>
+            
+            <div class="contact-info" id="preview-contact">
+                {% if is_edit %}
+                    <span id="preview-phone">{{ profile.phone }}</span> | 
+                    <span id="preview-email">{{ profile.email }}</span>
+                    {% if profile.linkedin_id %} | <span id="preview-linkedin">{{ profile.linkedin_id }}</span>{% endif %}
+                {% else %}
+                    [Phone] | [Email] | [LinkedIn]
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">PROFESSIONAL SUMMARY</div>
+            <div class="item-description" id="preview-objective">
+                {% if is_edit %}{{ profile.summary }}{% else %}[Your professional summary]{% endif %}
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">EDUCATION</div>
+            <div id="preview-education">
+                {% if is_edit and profile.education %}
+                    {% for edu in profile.education %}
+                        <div class="item">
+                            <div class="item-header">
+                                <div class="item-title">{{ edu.degree }}</div>
+                                <div class="item-dates">{{ edu.start_date }} - {{ edu.end_date }}</div>
+                            </div>
+                            <div class="item-subtitle">{{ edu.school_college }}</div>
+                            {% if edu.percentage_cgpa %}<div class="item-subtitle">Score: {{ edu.percentage_cgpa }}</div>{% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="item">
+                        <div class="item-header">
+                            <div class="item-title">[Degree]</div>
+                            <div class="item-dates">[Start] - [End]</div>
+                        </div>
+                        <div class="item-subtitle">[Institution]</div>
+                        <div class="item-subtitle">Score: [GPA]</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">WORK EXPERIENCE</div>
+            <div id="preview-experience">
+                {% if is_edit and profile.experience %}
+                    {% for exp in profile.experience %}
+                        <div class="item">
+                            <div class="item-header">
+                                <div class="item-title">{{ exp.role }} at {{ exp.company_name }}</div>
+                                <div class="item-dates">{{ exp.start_date }} - {{ edu.end_date }}</div>
+                            </div>
+                            {% if exp.description %}<div class="item-description">{{ exp.description }}</div>{% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="item">
+                        <div class="item-header">
+                            <div class="item-title">[Position] at [Company]</div>
+                            <div class="item-dates">[Start] - [End]</div>
+                        </div>
+                        <div class="item-description">[Description]</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">PROJECTS</div>
+            <div id="preview-projects">
+                {% if is_edit and profile.projects %}
+                    {% for proj in profile.projects %}
+                        <div class="item">
+                            <div class="item-title">{{ proj.project_name }}</div>
+                            {% if proj.tech_stack %}<div class="item-subtitle">{{ proj.tech_stack }}</div>{% endif %}
+                            {% if proj.description %}<div class="item-description">{{ proj.description }}</div>{% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="item">
+                        <div class="item-title">[Project Name]</div>
+                        <div class="item-subtitle">[Technologies]</div>
+                        <div class="item-description">[Description]</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">SKILLS</div>
+            <div class="skills" id="preview-skills">
+                {% if is_edit %}{{ profile.skills }}{% else %}[Your skills]{% endif %}
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">CERTIFICATIONS</div>
+            <div class="skills" id="preview-certifications">
+                {% if is_edit %}{{ profile.certifications }}{% else %}[Your certifications]{% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

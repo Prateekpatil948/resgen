@@ -1,0 +1,237 @@
+{% extends "pdf/base.html" %}
+{% load static %}
+
+{% block title %}Sign Up | ResumeGen{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #6c63ff;
+        --primary-light: #a78bfa;
+        --gradient-1: linear-gradient(135deg, #f0f4ff 0%, #e6edff 100%);
+        --gradient-2: linear-gradient(135deg, #818cf8 0%, #a5b4fc 100%);
+        --gradient-3: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%);
+        --content-bg: #f8fafc;
+        --text-color: #1e293b;
+        --glass-bg: rgba(255, 255, 255, 0.9);
+        --glass-border: rgba(99, 102, 241, 0.1);
+    }
+
+    body {
+        background: var(--gradient-1);
+        font-family: 'Poppins', sans-serif;
+        animation: gradientShift 15s ease infinite;
+        background-size: 200% 200%;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 1rem;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 380px;
+        padding: 1.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+    }
+
+    .auth-header {
+        margin-bottom: 1.25rem;
+        text-align: center;
+    }
+
+    .auth-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .auth-subtitle {
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+
+    .form-label {
+        font-size: 0.85rem;
+        color: var(--text-color);
+        margin-bottom: 0.25rem;
+        display: block;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .input-group {
+        display: flex;
+    }
+
+    .toggle-password {
+        padding: 0 0.5rem;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-left: 0;
+        border-radius: 0 8px 8px 0;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        padding: 0.5rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        width: 100%;
+        transition: all 0.2s;
+    }
+
+    .btn-primary {
+        background: var(--gradient-2);
+        color: white;
+        border: none;
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-primary:hover {
+        background: var(--gradient-3);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: var(--primary);
+        border: 1px solid #e2e8f0;
+        font-size: 0.85rem;
+    }
+
+    .invalid-feedback {
+        font-size: 0.75rem;
+        color: #ef4444;
+        margin-top: 0.25rem;
+    }
+
+    .alert {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+    }
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Create Account</h1>
+            <p class="auth-subtitle">Get started in seconds</p>
+        </div>
+
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                {% for field, errors in form.errors.items %}
+                    {{ errors|first }}
+                    {% if not forloop.last %}<br>{% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" novalidate>
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="id_username" class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" id="id_username" 
+               value="{{ form.username.value|default:'' }}" required>
+        {% if form.username.errors %}
+            <div class="invalid-feedback">{{ form.username.errors|first }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_email" class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" id="id_email" 
+               value="{{ form.email.value|default:'' }}" required>
+        {% if form.email.errors %}
+            <div class="invalid-feedback">{{ form.email.errors|first }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_password1" class="form-label">Password</label>
+        <div class="input-group">
+            <input type="password" name="password1" class="form-control" id="id_password1" required>
+            <button class="toggle-password" type="button">👁️</button>
+        </div>
+        {% if form.password1.errors %}
+            <div class="invalid-feedback">{{ form.password1.errors|first }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_password2" class="form-label">Confirm Password</label>
+        <div class="input-group">
+            <input type="password" name="password2" class="form-control" id="id_password2" required>
+            <button class="toggle-password" type="button">👁️</button>
+        </div>
+        {% if form.password2.errors %}
+            <div class="invalid-feedback">{{ form.password2.errors|first }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+        <a href="{% url 'login' %}" class="btn btn-secondary">Already have an account?</a>
+    </div>
+</form>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.toggle-password').forEach(button => {
+    button.addEventListener('click', function() {
+        const input = this.parentElement.querySelector('input');
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            this.textContent = '👁️';
+        }
+    });
+});
+</script>
+{% endblock %}

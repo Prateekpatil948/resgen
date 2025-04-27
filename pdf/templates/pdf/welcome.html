@@ -1,0 +1,485 @@
+{% extends "pdf/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="welcome-container">
+    <!-- Hero Section with Background Image -->
+    <section class="hero text-center py-5" style="background: linear-gradient(rgba(20, 33, 61, 0.85), rgba(20, 33, 61, 0.85)), url('{% static 'images/image1.png' %}') no-repeat center center; background-size: cover;">
+        <div class="container">
+            <div class="hero-content glass-card  p-5 rounded-4">
+                <h1 class="display-3 fw-bold mb-4 text-white">Craft Your <span class="text-gradient-primary">Dream Resume</span></h1>
+                <p class="lead text-white-90 mb-5">Impress recruiters with professionally designed resumes in minutes</p>
+                <a href="{% url 'generate_options' %}" class="btn btn-pill btn-glow px-5 py-3">
+                    <i class="fas fa-magic me-2"></i>Start Creating Now
+                </a>
+            </div>
+            <div class="hero-scroll-hint mt-5">
+                <p class="text-white-70">Scroll Down to Explore</p>
+                
+                <i class="fas fa-chevron-down text-white bounce"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features with Floating Animation - All in one row -->
+    <section class="features py-5 bg-soft">
+        <div class="container">
+            <h2 class="text-center mb-5 section-title">Why Our <span class="text-gradient-primary">Resume Builder</span></h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="feature-card card p-4 rounded-4 h-100 floating-animation" style="--delay: 1">
+                        <div class="icon-wrapper mb-4 bg-gradient-1 shadow">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="text-gradient-1">Lightning Fast</h3>
+                        <p class="text-muted">Create a professional resume in under 5 minutes with our intuitive builder</p>
+                        <div class="feature-hover-effect"></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="feature-card card p-4 rounded-4 h-100 floating-animation" style="--delay: 2">
+                        <div class="icon-wrapper mb-4 bg-gradient-2 shadow">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3 class="text-gradient-2">ATS Optimized</h3>
+                        <p class="text-muted">Our templates are designed to pass through applicant tracking systems</p>
+                        <div class="feature-hover-effect"></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="feature-card card p-4 rounded-4 h-100 floating-animation" style="--delay: 3">
+                        <div class="icon-wrapper mb-4 bg-gradient-3 shadow">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="text-gradient-3">Beautiful Designs</h3>
+                        <p class="text-muted">Choose from modern, professional templates that stand out</p>
+                        <div class="feature-hover-effect"></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="feature-card card p-4 rounded-4 h-100 floating-animation" style="--delay: 4">
+                        <div class="icon-wrapper mb-4 bg-gradient-4 shadow">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="text-gradient-4">AI Score</h3>
+                        <p class="text-muted">Get instant feedback and improve your resume with our AI scoring system and AI Suggestions</p>
+                        <div class="feature-hover-effect"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works with Timeline Style -->
+    <section class="steps py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 section-title">How to Create Your <span class="text-gradient-accent">Perfect Resume</span></h2>
+            <div class="timeline">
+                <div class="timeline-step">
+                    <div class="timeline-badge bg-gradient-1 pulse-animation">1</div>
+                    <div class="timeline-card card p-4 rounded-4">
+                        <h3>Choose a Design</h3>
+                        <p class="text-muted">Select from our beautiful resume templates</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-badge bg-gradient-2 pulse-animation">2</div>
+                    <div class="timeline-card card p-4 rounded-4">
+                        <h3>Fill In Your Details</h3>
+                        <p class="text-muted">Add your experience, education, and skills</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-badge bg-gradient-3 pulse-animation">3</div>
+                    <div class="timeline-card card p-4 rounded-4">
+                        <h3>Download & Apply</h3>
+                        <p class="text-muted">Get your polished resume and start applying</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA with Particle Background -->
+    <section class="cta py-5 text-center">
+        <div class="particles-container">
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        <div class="container position-relative">
+            <div class="logo-container mb-4">
+                <img src="{% static 'images/logonew.png' %}" alt="ResGen Logo" class="logo-img" style="height: 60px;">
+                <h2 class="app-name mb-0">ResGen</h2>
+            </div>
+            <h2 class="mb-4 text-white">Ready to <span class="text-gradient-accent">Transform</span> Your Career?</h2>
+            <p class="text-white-90 mb-5">Join thousands of professionals who got hired with our resumes</p>
+            <a href="{% url 'generate_options' %}" class="btn btn-pill btn-glow-lg px-5 py-3" style="color: #fff;">
+                Create My Resume Now <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-4 text-center">
+        <div class="container">
+            <p class="mb-0 text-white-50">
+                &copy; {% now "Y" %} Resume Builder. Crafted with <i class="fas fa-heart text-danger"></i> by Prateek Patil.
+            </p>
+        </div>
+    </footer>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --color-primary: #4361ee;
+        --color-primary-dark: #3a0ca3;
+        --color-secondary: #f72585;
+        --color-accent: #4cc9f0;
+        --color-dark: #14213d;
+        --color-light: #f8f9fa;
+        --glass-bg: rgba(255, 255, 255, 0.1);
+        --glass-border: rgba(255, 255, 255, 0.2);
+        --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+        --color-gradient-4-start: #00b4db;
+        --color-gradient-4-end: #0083b0;
+    }
+
+    /* Base Styles */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f9f9ff;
+        color: var(--color-dark);
+    }
+    .text-white-90 { color: rgba(255,255,255,0.9); }
+    .text-white-70 { color: rgba(255,255,255,0.7); }
+    .bg-soft { background-color: #f9f9ff; }
+
+    /* Gradient Text & Backgrounds */
+    .text-gradient-primary {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    .text-gradient-accent {
+        background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    .bg-gradient-1 { background: linear-gradient(135deg, var(--color-primary), #7209b7); }
+    .bg-gradient-2 { background: linear-gradient(135deg, #f72585, #b5179e); }
+    .bg-gradient-3 { background: linear-gradient(135deg, #4cc9f0, #4895ef); }
+    .bg-gradient-4 { 
+        background: linear-gradient(135deg, var(--color-gradient-4-start), var(--color-gradient-4-end)); 
+    }
+    .text-gradient-4 {
+        background: linear-gradient(135deg, var(--color-gradient-4-start), var(--color-gradient-4-end));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* Hero Section */
+    .hero {
+        background: linear-gradient(135deg, var(--color-primary-dark), var(--color-dark));
+        padding: 10rem 0 8rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(67,97,238,0.1) 0%, transparent 70%);
+        animation: pulse 15s infinite alternate;
+    }
+    .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--glass-shadow);
+    }
+    .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .hero-scroll-hint {
+        animation: bounce 2s infinite;
+    }
+
+    /* Feature Cards */
+    .feature-card {
+        border: none;
+        box-shadow: 0 10px 30px rgba(67,97,238,0.1);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        background: white;
+    }
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(67,97,238,0.2);
+    }
+    .feature-hover-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(67,97,238,0.05) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+    .feature-card:hover .feature-hover-effect {
+        opacity: 1;
+    }
+    .icon-wrapper {
+        width: 80px;
+        height: 80px;
+        color: white;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+        transition: all 0.4s ease;
+    }
+    .feature-card:hover .icon-wrapper {
+        transform: rotate(10deg) scale(1.1);
+    }
+
+    /* Logo styles */
+    .logo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+    .logo-img {
+        transition: transform 0.3s ease;
+    }
+    .logo-img:hover {
+        transform: rotate(15deg) scale(1.1);
+    }
+    .app-name {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fff, #c9d6ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 1px;
+    }
+
+    /* Floating Animation */
+    .floating-animation {
+        animation: floating 3s ease-in-out infinite;
+        animation-delay: calc(var(--delay) * 0.3s);
+    }
+
+    /* Timeline Steps */
+    .timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .timeline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(to bottom, var(--color-primary), var(--color-accent));
+        transform: translateX(-50%);
+    }
+    .timeline-step {
+        position: relative;
+        margin-bottom: 3rem;
+        width: 50%;
+    }
+    .timeline-step:nth-child(odd) {
+        left: 0;
+        padding-right: 3rem;
+        text-align: right;
+    }
+    .timeline-step:nth-child(even) {
+        left: 50%;
+        padding-left: 3rem;
+    }
+    .timeline-badge {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+    }
+    .timeline-step:nth-child(odd) .timeline-badge {
+        right: -30px;
+    }
+    .timeline-step:nth-child(even) .timeline-badge {
+        left: -30px;
+    }
+    .timeline-card {
+        box-shadow: 0 5px 25px rgba(67,97,238,0.1);
+        transition: all 0.3s ease;
+    }
+    .timeline-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(67,97,238,0.2);
+    }
+
+    /* CTA Section */
+    .cta {
+        background: linear-gradient(135deg, var(--color-dark), #1a1a2e);
+        padding: 8rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+    .particle {
+        position: absolute;
+        background: rgba(255,255,255,0.3);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    /* Buttons */
+    .btn-pill {
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    .btn-glow {
+        box-shadow: 0 4px 15px rgba(67,97,238,0.3);
+        background: var(--color-primary);
+        color: white;
+        border: none;
+    }
+    .btn-glow:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(67,97,238,0.4);
+        color: white;
+    }
+    .btn-glow-lg {
+        box-shadow: 0 5px 20px rgba(67,97,238,0.4);
+        background: var(--color-primary);
+        color: white;
+        border: none;
+    }
+    .btn-glow-lg:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(67,97,238,0.6);
+        color: white;
+    }
+
+    /* Section Titles */
+    .section-title {
+        position: relative;
+        display: inline-block;
+    }
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+    }
+
+    /* Animations */
+    @keyframes floating {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-20px); }
+        60% { transform: translateY(-10px); }
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.8; }
+        100% { transform: scale(1.2); opacity: 0; }
+    }
+    @keyframes pulse-animation {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(67,97,238,0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(67,97,238,0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(67,97,238,0); }
+    }
+    .pulse-animation {
+        animation: pulse-animation 2s infinite;
+    }
+
+    /* Footer */
+    .footer {
+        background: var(--color-dark);
+        color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero { padding: 7rem 0 5rem; }
+        .display-3 { font-size: 2.5rem; }
+        .timeline::before { left: 30px; }
+        .timeline-step { width: 100%; left: 0; padding-right: 0; padding-left: 70px; text-align: left; }
+        .timeline-step:nth-child(odd) { padding-right: 0; padding-left: 70px; text-align: left; }
+        .timeline-step:nth-child(even) { left: 0; padding-right: 0; padding-left: 70px; }
+        .timeline-badge { left: 0 !important; right: auto !important; }
+        .app-name { font-size: 2rem; }
+        .col-md-3 {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Simple particle effect for CTA section
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctaSection = document.querySelector('.cta');
+        if (ctaSection) {
+            for (let i = 0; i < 20; i++) {
+                createParticle();
+            }
+        }
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random properties
+            const size = Math.random() * 5 + 2;
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            const duration = Math.random() * 10 + 10;
+            const delay = Math.random() * 5;
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${posX}%`;
+            particle.style.top = `${posY}%`;
+            particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+            
+            ctaSection.querySelector('.particles-container').appendChild(particle);
+        }
+    });
+</script>
+{% endblock %}

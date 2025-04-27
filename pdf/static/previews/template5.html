@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOPHIA BENNETT - Marketing Manager</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 22pt;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 16pt;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 3px;
+        }
+        
+        .horizontal-line {
+            border-bottom: 3px solid #2c3e50;
+            margin: 20px 0;
+        }
+        
+        .two-columns {
+            display: flex;
+            flex-wrap: nowrap; /* Changed from wrap to nowrap */
+            gap: 30px;
+            position: relative;
+        }
+        
+        .two-columns::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            border-left: 3px solid #2c3e50;
+        }
+        
+        .left-column, .right-column {
+            flex: 1;
+            min-width: 0; /* Changed from 350px to 0 to allow flex shrinking */
+            box-sizing: border-box;
+            overflow: hidden; /* Prevents content from overflowing */
+        }
+        
+        .contact-info {
+            margin-top: 20px;
+            font-size: 11pt;
+            text-align: center;
+        }
+        
+        .contact-item {
+            display: inline-block;
+            margin: 0 15px;
+        }
+        
+        .icon {
+            margin-right: 5px;
+            font-size: 14px;
+        }
+        
+        .job-title {
+            font-weight: bold;
+            font-size: 12pt;
+        }
+        
+        .company {
+            font-style: italic;
+            margin-bottom: 5px;
+            font-size: 11pt;
+        }
+        
+        .date {
+            float: right;
+            font-weight: normal;
+        }
+        
+        ul {
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            font-size: 11pt;
+        }
+        
+        .skills-list {
+            column-count: 2;
+            column-gap: 20px;
+        }
+        
+        p {
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-size: 11pt;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .two-columns {
+                flex-direction: column;
+            }
+            
+            .two-columns::after {
+                display: none;
+            }
+            
+            .left-column, .right-column {
+                min-width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <h1>SOPHIA BENNETT</h1>
+        <div class="contact-info">
+            <div class="contact-item">
+                <span class="icon"><i class="fas fa-phone"></i></span>(555) 123-4567
+            </div>
+            <div class="contact-item">
+                <span class="icon"><i class="fas fa-envelope"></i></span>sbennett@email.com
+            </div>
+            <div class="contact-item">
+                <span class="icon"><i class="fab fa-linkedin"></i></span>linkedin.com/in/sopbennett
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Professional Summary</h2>
+        <p>Dynamic and creative professional with over five years of experience in digital marketing and content strategy. Adept at managing multi-channel marketing campaigns, driving engagement, and boosting brand visibility through innovative solutions. Excellent communicator with strong project management skills, proven leadership abilities, and a passion for delivering results in fast-paced environments.</p>
+    </div>
+
+    <div class="horizontal-line"></div>
+
+    <div class="two-columns">
+        <div class="left-column">
+            <h2>Education</h2>
+            <div class="job-title">
+                Cityville University
+                <span class="date">2013 – 2017</span>
+            </div>
+            <div class="company">Bachelor of Science in Marketing</div>
+            <p>Relevant Coursework: Digital Marketing, Consumer Behavior, Market Research, Brand Management</p>
+
+            <h2>Certifications</h2>
+            <ul>
+                <li>Google Ads Certification</li>
+                <li>HubSpot Content Marketing</li>
+                <li>Facebook Blueprint</li>
+            </ul>
+
+            
+        </div>
+
+        <div class="right-column">
+            <h2>Skills</h2>
+            <div class="skills-list">
+                <ul>
+                    <li>Digital Marketing Strategy</li>
+                    <li>SEO/SEM Optimization</li>
+                    <li>Content Creation & Strategy</li>
+                    <li>Social Media Management</li>
+                    <li>Email Marketing Campaigns</li>
+                    <li>Marketing Analytics</li>
+                    <li>Budget Management</li>
+                    <li>Team Leadership</li>
+                </ul>
+            </div>
+
+            <h2>Professional Experience</h2>
+            <div class="job-title">
+                Marketing Manager
+                <span class="date">2021 – Present</span>
+            </div>
+            <div class="company">Bright Ideas Media, Cityville</div>
+            <ul>
+                <li>Led a cross-functional team in developing digital marketing strategies that increased website traffic by 40% and social media engagement by 60% within a year</li>
+                <li>Managed $500K annual marketing budget, optimizing spend across PPC, SEO, social media, and content marketing</li>
+                <li>Collaborated with product and sales teams to implement campaigns that drove a 25% increase in new customer acquisition</li>
+                <li>Oversaw content strategies that led to a 35% increase in lead generation</li>
+                <li>Implemented marketing automation systems that improved campaign efficiency by 30%</li>
+            </ul>
+
+            <h2>Projects</h2>
+            <div class="job-title">
+                Brand Awareness Campaign
+            </div>
+            <div class="company">Client: Global Tech Solutions</div>
+            <ul>
+                <li>Developed integrated campaign across digital and traditional media</li>
+                <li>Increased brand recognition by 45% in target demographics</li>
+                <li>Generated 2,000+ qualified leads in 3-month period</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

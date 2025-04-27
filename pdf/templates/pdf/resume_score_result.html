@@ -1,0 +1,606 @@
+{% extends "pdf/base.html" %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #5b6abf;
+        --primary-light: #e8ebfa;
+        --text-dark: #4a5568;
+        --text-medium: #718096;
+        --bg-light: #f9fafc;
+        --border-light: #f0f2f7;
+    }
+    
+    .analysis-card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--border-light);
+        background: white;
+    }
+    
+    .card-header {
+        background: var(--primary);
+        padding: 0.75rem 1.25rem;
+        color: white;
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .score-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.25rem;
+    }
+    
+    .score-badge {
+        font-size: 1rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        color: white;
+    }
+    
+    .section-card {
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-light);
+        background: white;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+    
+    .section-header {
+        padding: 0.75rem 1rem;
+        background-color: var(--bg-light);
+        border-bottom: 1px solid var(--border-light);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .section-badge {
+        font-size: 0.85rem;
+        padding: 0.35rem 0.65rem;
+        border-radius: 6px;
+        color: white;
+    }
+    
+    .alert {
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 0;
+        border: none;
+    }
+    
+    .list-group-item {
+        padding: 0.75rem 1rem;
+        border-color: var(--border-light);
+        background-color: white;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+    }
+    
+    .btn {
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+        background: var(--primary);
+        border: none;
+    }
+    
+    .btn-primary:hover {
+        background: #4a579e;
+    }
+    
+    .btn-outline-primary {
+        border: 1px solid var(--primary);
+        color: var(--primary);
+    }
+    
+    .btn-outline-primary:hover {
+        background: var(--primary-light);
+    }
+    
+    .btn-outline-secondary {
+        border: 1px solid var(--border-light);
+        color: var(--text-dark);
+    }
+    
+    .btn-outline-secondary:hover {
+        background: var(--bg-light);
+    }
+    
+    .btn-info {
+        background: #5b6abf;
+        border: none;
+        color: white;
+    }
+    
+    .btn-info:hover {
+        background: #4a579e;
+    }
+
+    /* AI Suggestions Styles */
+    .ai-suggestion-card {
+        border-left: 4px solid var(--primary);
+        margin-bottom: 1rem;
+        background: white;
+        border-radius: 0 8px 8px 0;
+    }
+    
+    .ai-suggestion-header {
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+        padding: 0.5rem 0.75rem 0;
+    }
+    
+    .ai-suggestion-content {
+        padding: 0.75rem;
+        background-color: rgba(91, 106, 191, 0.05);
+        border-radius: 0 0 8px 0;
+    }
+    
+    .ai-suggestion-example {
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        background-color: white;
+        border-radius: 4px;
+        font-style: italic;
+        border-left: 2px solid var(--primary);
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1050;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .modal-content {
+        background-color: white;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transform: translateY(-20px);
+        transition: all 0.3s ease;
+    }
+    
+    .modal-overlay.show .modal-content {
+        transform: translateY(0);
+    }
+    
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-light);
+    }
+    
+    .modal-header h5 {
+        margin: 0;
+        font-size: 1.25rem;
+        color: var(--primary);
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-medium);
+    }
+    
+    .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+    }
+    
+    .spinner-border {
+        width: 3rem;
+        height: 3rem;
+        color: var(--primary);
+    }
+    
+    @media (max-width: 576px) {
+        .score-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .score-badge {
+            align-self: flex-end;
+        }
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container py-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card analysis-card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0"><i class="fas fa-chart-line me-2"></i>Analysis Results</h4>
+                        {% if not profile.id %}
+                            <small class="text-light">(From Uploaded File)</small>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if score_data.error %}
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                        <h5><i class="fas fa-exclamation-circle me-2"></i>Analysis Error</h5>
+                        <p class="mb-2">{{ score_data.summary }}</p>
+                        <ul class="mb-0 ps-3">
+                            {% for suggestion in score_data.suggestions %}
+                                <li>{{ suggestion }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="text-center">
+                        <a href="{% if profile.id %}{% url 'analyze_profile_resume' profile.id %}{% else %}{% url 'analyze_resume' %}{% endif %}" 
+                           class="btn btn-primary">
+                            <i class="fas fa-redo me-1"></i> Try Again
+                        </a>
+                    </div>
+                </div>
+                
+                {% else %}
+                <div class="card-body">
+                    <!-- Header with name and score -->
+                    <div class="score-header">
+                        <div>
+                            <h5 class="mb-1">
+                                {% if profile.first_name %}
+                                    {{ profile.first_name }} {{ profile.last_name }}
+                                {% else %}
+                                    Uploaded Resume
+                                {% endif %}
+                            </h5>
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>
+                                {{ profile.last_analyzed|date:"M d, Y H:i" }}
+                            </small>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge {% if profile.score >= 70 %}bg-success{% elif profile.score >= 40 %}bg-warning{% else %}bg-danger{% endif %} score-badge">
+                                {{ profile.score|floatformat:0 }}/100
+                            </span>
+                            {% if score_data.job_description_match %}
+                            <div class="mt-1">
+                                <span class="badge bg-info score-badge">
+                                    Job Match: {{ score_data.job_description_match }}%
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Executive Summary -->
+                    <div class="card section-card">
+                        <div class="section-header">
+                            <h6 class="mb-0"><i class="fas fa-chart-pie me-2"></i> Summary</h6>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="alert alert-info">
+                                {{ profile.feedback }}
+                            </div>
+                            
+                            {% if profile.strengths %}
+                            <div class="alert alert-success">
+                                <h6 class="mb-2"><i class="fas fa-check-circle me-2"></i>Strengths</h6>
+                                <ul class="mb-0 ps-3">
+                                    {% if profile.strengths is string %}
+                                        <li>{{ profile.strengths }}</li>
+                                    {% else %}
+                                        {% for strength in profile.strengths %}
+                                            <li>{{ strength }}</li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            
+                            {% if profile.weaknesses %}
+                            <div class="alert alert-warning">
+                                <h6 class="mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Areas for Improvement</h6>
+                                <ul class="mb-0 ps-3">
+                                    {% if profile.weaknesses is string %}
+                                        <li>{{ profile.weaknesses }}</li>
+                                    {% else %}
+                                        {% for weakness in profile.weaknesses %}
+                                            <li>{{ weakness }}</li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Section Scores -->
+                    {% for section in score_metrics %}
+                    <div class="card section-card">
+                        <div class="section-header">
+                            <h6 class="mb-0">
+                                <i class="fas 
+                                    {% if section.name == 'summary' %}fa-file-alt
+                                    {% elif section.name == 'experience' %}fa-briefcase
+                                    {% elif section.name == 'skills' %}fa-tools
+                                    {% elif section.name == 'education' %}fa-graduation-cap
+                                    {% elif section.name == 'projects' %}fa-project-diagram
+                                    {% elif section.name == 'grammar' %}fa-spell-check
+                                    {% elif section.name == 'formatting' %}fa-align-left
+                                    {% else %}fa-question
+                                    {% endif %} me-2"></i>
+                                {{ section.name|title }}
+                            </h6>
+                            <span class="badge {% if section.score >= 7 %}bg-success{% elif section.score >= 4 %}bg-warning{% else %}bg-danger{% endif %} section-badge">
+                                {{ section.score }}/10
+                            </span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="alert {% if section.score >= 7 %}alert-success{% elif section.score >= 4 %}alert-warning{% else %}alert-danger{% endif %}">
+                                {{ section.feedback }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- AI Suggestions Section -->
+                    {% if score_data.ai_suggestions_for_edit %}
+                    <div class="card section-card" id="aiSuggestionsSection">
+                        <div class="section-header">
+                            <h6 class="mb-0"><i class="fas fa-robot me-2"></i> AI-Powered Editing Suggestions</h6>
+                        </div>
+                        <div class="card-body">
+                            {% for suggestion in score_data.ai_suggestions_for_edit %}
+                            <div class="ai-suggestion-card">
+                                <div class="ai-suggestion-header">
+                                    <i class="fas fa-arrow-right me-2"></i>
+                                    {{ suggestion.section|title }} Section
+                                </div>
+                                <div class="ai-suggestion-content">
+                                    <p>{{ suggestion.suggestion }}</p>
+                                    {% if suggestion.example %}
+                                    <div class="ai-suggestion-example">
+                                        <strong>Example:</strong> {{ suggestion.example }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Suggestions -->
+                    {% if score_data.suggestions %}
+                    <div class="card section-card">
+                        <div class="section-header">
+                            <h6 class="mb-0"><i class="fas fa-lightbulb me-2"></i> Recommendations</h6>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush" style="list-style-type: disc; padding-left: 1.5rem;">
+                                {% for suggestion in score_data.suggestions %}
+                                    <li class="list-group-item" style="display: list-item; padding-left: 0.5rem; border: none; margin-left: 1rem;">
+                                        {{ suggestion }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        {% if profile.id %}
+                            <a href="{% url 'generate_resume' %}?profile_id={{ profile.id }}" class="btn btn-primary">
+                                <i class="fas fa-edit me-1"></i> Edit Resume
+                            </a>
+                            <a href="{% url 'analyze_profile_resume' profile.id %}" class="btn btn-outline-primary">
+                                <i class="fas fa-redo me-1"></i> Re-analyze
+                            </a>
+                        {% else %}
+                            <a href="{% url 'analyze_resume' %}" class="btn btn-primary">
+                                <i class="fas fa-upload me-1"></i> Analyze Another
+                            </a>
+                        {% endif %}
+                        
+                        <!-- New AI Suggestions Button -->
+                        <button id="aiSuggestionsBtn" class="btn btn-info">
+                            <i class="fas fa-robot me-1"></i> Get AI Suggestions
+                        </button>
+                        
+                        <a href="{% if profile.id %}{% url 'list' %}{% else %}{% url 'home' %}{% endif %}" 
+                           class="btn btn-outline-secondary ms-auto">
+                            <i class="fas fa-arrow-left me-1"></i> 
+                            {% if profile.id %}Back to List{% else %}Home{% endif %}
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const aiSuggestionsBtn = document.getElementById('aiSuggestionsBtn');
+    const aiSuggestionsSection = document.getElementById('aiSuggestionsSection');
+    
+    // If AI suggestions are already loaded (from initial analysis)
+    if (aiSuggestionsSection) {
+        aiSuggestionsBtn.style.display = 'none';
+    } else if (aiSuggestionsBtn) {
+        aiSuggestionsBtn.addEventListener('click', function() {
+            // Show loading state
+            const originalBtnText = aiSuggestionsBtn.innerHTML;
+            aiSuggestionsBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Generating...';
+            aiSuggestionsBtn.disabled = true;
+            
+            // Prepare the request data
+            const requestData = {
+                resume_text: '{{ profile.resume_text|escapejs }}'
+            };
+            
+            // Only include profile_id if this is a saved profile
+            // {% if profile.id %}
+            //     requestData.profile_id = '{{ profile.id }}';
+            // {% endif %}
+            
+            // Make AJAX call to get AI suggestions
+            fetch('{% url "get_ai_suggestions" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAiSuggestionsModal(data.ai_suggestions || []);
+                } else {
+                    showAiSuggestionsModal([], data.error || 'Failed to get suggestions');
+                }
+                aiSuggestionsBtn.innerHTML = originalBtnText;
+                aiSuggestionsBtn.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAiSuggestionsModal([], 'Failed to connect to server');
+                aiSuggestionsBtn.innerHTML = originalBtnText;
+                aiSuggestionsBtn.disabled = false;
+            });
+        });
+    }
+
+    function showAiSuggestionsModal(suggestions, errorMessage = null) {
+        // Create modal overlay
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'modal-overlay';
+        
+        // Create modal content
+        const modalContent = document.createElement('div');
+        modalContent.className = 'modal-content';
+        
+        // Create modal header
+        const modalHeader = document.createElement('div');
+        modalHeader.className = 'modal-header';
+        
+        const modalTitle = document.createElement('h5');
+        modalTitle.innerHTML = '<i class="fas fa-robot me-2"></i>AI Editing Suggestions';
+        
+        const closeButton = document.createElement('button');
+        closeButton.className = 'modal-close';
+        closeButton.innerHTML = '&times;';
+        closeButton.addEventListener('click', function() {
+            document.body.removeChild(modalOverlay);
+        });
+        
+        modalHeader.appendChild(modalTitle);
+        modalHeader.appendChild(closeButton);
+        
+        // Create content container
+        const contentContainer = document.createElement('div');
+        
+        if (errorMessage) {
+            contentContainer.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    ${errorMessage}
+                </div>
+            `;
+        } else if (suggestions.length > 0) {
+            suggestions.forEach(suggestion => {
+                const suggestionCard = document.createElement('div');
+                suggestionCard.className = 'ai-suggestion-card mb-3';
+                
+                suggestionCard.innerHTML = `
+                    <div class="ai-suggestion-header">
+                        <i class="fas fa-arrow-right me-2"></i>
+                        ${suggestion.section || 'General'} Section
+                    </div>
+                    <div class="ai-suggestion-content">
+                        <p>${suggestion.suggestion || ''}</p>
+                        ${suggestion.example ? `
+                            <div class="ai-suggestion-example">
+                                <strong>Example:</strong> ${suggestion.example}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                contentContainer.appendChild(suggestionCard);
+            });
+        } else {
+            contentContainer.innerHTML = `
+                <div class="alert alert-info">
+                    No specific suggestions available. Try adding more details to your resume.
+                </div>
+            `;
+        }
+        
+        // Add elements to modal
+        modalContent.appendChild(modalHeader);
+        modalContent.appendChild(contentContainer);
+        modalOverlay.appendChild(modalContent);
+        document.body.appendChild(modalOverlay);
+        
+        // Show modal with animation
+        setTimeout(() => {
+            modalOverlay.classList.add('show');
+        }, 10);
+        
+        // Close modal when clicking outside
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                document.body.removeChild(modalOverlay);
+            }
+        });
+    }
+});
+</script>
+{% endblock content %}

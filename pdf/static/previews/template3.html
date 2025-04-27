@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Template</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #f8f9fc;
+            --success: #1cc88a;
+            --light: #f8f9fa;
+        }
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .resume-preview {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #333;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .preview-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .preview-title {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        .preview-contact {
+            text-align: right;
+        }
+        .preview-section {
+            margin-bottom: 1.5rem;
+        }
+        .preview-section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.3rem;
+            margin-bottom: 1rem;
+        }
+        .preview-item {
+            margin-bottom: 1rem;
+        }
+        .preview-item-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+        }
+        .preview-item-title {
+            font-size: 1.1rem;
+        }
+        .preview-item-date {
+            color: #666;
+        }
+        .preview-item-subtitle {
+            color: #666;
+            font-style: italic;
+        }
+        .preview-item-content {
+            margin-top: 0.5rem;
+        }
+        .preview-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .skill-tag {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .social-link {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="resume-preview">
+        <div class="preview-header">
+            <div>
+                <div class="preview-name">John Doe</div>
+                <div class="preview-title">Software Engineer</div>
+            </div>
+            <div class="preview-contact">
+                <div>john.doe@example.com</div>
+                <div>(123) 456-7890</div>
+                <div class="social-links">
+                    <a href="#" class="social-link" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Professional Summary</div>
+            <div class="preview-item-content">
+                Experienced software engineer with 5+ years of experience in web development. 
+                Specialized in JavaScript frameworks and cloud technologies.
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Education</div>
+            <div>
+                <div class="preview-item">
+                    <div class="preview-item-header">
+                        <span class="preview-item-title">Stanford University</span>
+                        <span class="preview-item-date">2015 - 2019</span>
+                    </div>
+                    <div class="preview-item-subtitle">Bachelor of Science in Computer Science</div>
+                    <div class="preview-item-content">GPA: 3.8/4.0</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Experience</div>
+            <div>
+                <div class="preview-item">
+                    <div class="preview-item-header">
+                        <span class="preview-item-title">Tech Solutions Inc.</span>
+                        <span class="preview-item-date">2020 - Present</span>
+                    </div>
+                    <div class="preview-item-subtitle">Senior Software Engineer</div>
+                    <div class="preview-item-content">
+                        Lead development team building enterprise SaaS solutions. 
+                        Implemented microservices architecture improving system performance by 40%.
+                    </div>
+                </div>
+                <div class="preview-item">
+                    <div class="preview-item-header">
+                        <span class="preview-item-title">Digital Innovations</span>
+                        <span class="preview-item-date">2019 - 2020</span>
+                    </div>
+                    <div class="preview-item-subtitle">Junior Developer</div>
+                    <div class="preview-item-content">
+                        Developed and maintained web applications using React and Node.js.
+                        Collaborated with cross-functional teams to deliver client projects.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Projects</div>
+            <div>
+                <div class="preview-item">
+                    <div class="preview-item-header">
+                        <span class="preview-item-title">E-commerce Platform</span>
+                    </div>
+                    <div class="preview-item-subtitle">Tech Stack: React, Node.js, MongoDB</div>
+                    <div class="preview-item-content">
+                        Full-stack e-commerce solution with payment integration and inventory management.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Skills</div>
+            <div class="preview-skills">
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">AWS</span>
+                <span class="skill-tag">Docker</span>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Additional Information</div>
+            <div>
+                <div><strong>Certifications:</strong> AWS Certified Developer, Google Cloud Professional</div>
+                
+            </div>
+        </div>
+
+        
+
+    </div>
+
+    
+    
+</body>
+</html>

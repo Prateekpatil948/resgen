@@ -1,0 +1,531 @@
+{% extends 'pdf/base.html' %}
+{% load static %}
+
+{% block title %}{% if is_edit %}Edit{% else %}Create{% endif %} Your Resume{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'pdf/generate.css' %}">
+<style>
+    :root {
+        --primary: #5b6abf;
+        --primary-light: #e8ebfa;
+        --text-dark: #4a5568;
+        --text-medium: #718096;
+        --bg-light: #f9fafc;
+        --border-light: #f0f2f7;
+    }
+
+    /* Loading spinner styles */
+    .spinner-border {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        vertical-align: text-bottom;
+        border: 0.2em solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: spinner-border .75s linear infinite;
+    }
+    @keyframes spinner-border {
+        to { transform: rotate(360deg); }
+    }
+    
+    /* Main container */
+    .resume-builder-container {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        height: calc(100vh - 150px);
+    }
+    
+    /* Form and preview sections - equal width */
+    .resume-form, 
+    .resume-preview {
+        flex: 1;
+        min-width: 0; /* Prevent flex items from overflowing */
+        height: 100%;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: 1px solid var(--border-light);
+        overflow-y: auto;
+    }
+    
+    /* Form header */
+    .form-header {
+        background: var(--primary);
+        color: white;
+        padding: 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    /* Step indicator */
+    .step-indicator {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1rem 0;
+        flex-wrap: wrap;
+        background: white;
+        padding: 0.5rem;
+        position: sticky;
+        top: 60px;
+        z-index: 9;
+        border-bottom: 1px solid var(--border-light);
+    }
+    
+    /* Form steps */
+    .form-step {
+        padding: 1.5rem;
+    }
+    
+    /* Preview styling */
+    .resume-preview {
+        padding: 0;
+        position: sticky;
+        top: 1rem;
+    }
+    
+    /* Modal styling for preview */
+    .preview-modal .modal-dialog {
+        max-width: 800px;
+    }
+    .preview-modal .modal-body {
+        padding: 0;
+        height: 70vh;
+        overflow-y: auto;
+    }
+    .preview-modal iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .resume-builder-container {
+            flex-direction: column;
+            height: auto;
+        }
+        
+        .resume-form,
+        .resume-preview {
+            width: 100%;
+            height: auto;
+        }
+        
+        .resume-preview {
+            order: -1;
+            margin-bottom: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <div class="resume-builder-container">
+        <!-- Form Section -->
+        <div class="resume-form">
+            <div class="form-header text-center">
+                <h4 class="mb-0">{% if is_edit %}Edit{% else %}Create{% endif %} Your Resume</h4>
+            </div>
+
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step active" id="step1-indicator">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Basic Info</div>
+                </div>
+                <div class="step" id="step2-indicator">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Education</div>
+                </div>
+                <div class="step" id="step3-indicator">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Experience</div>
+                </div>
+                <div class="step" id="step4-indicator">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Projects</div>
+                </div>
+                <div class="step" id="step5-indicator">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Skills</div>
+                </div>
+            </div>
+
+            <!-- Form Steps -->
+            <form method="post" enctype="multipart/form-data" id="resumeForm" action="{% url 'generate_resume' %}">
+                {% csrf_token %}
+                <input type="hidden" name="template_choice" value="{{ request.GET.template|default:'1' }}">
+                {% if is_edit %}
+                    <input type="hidden" name="profile_id" value="{{ profile.id }}">
+                {% endif %}
+
+                <!-- Step 1: Basic Information -->
+                <div class="form-step active" id="step1">
+                    <div class="section-card">
+                        <div class="section-header">Personal Information</div>
+                        <div class="section-body">
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control" name="first_name" 
+                                        value="{% if is_edit %}{{ profile.first_name }}{% endif %}" 
+                                        oninput="updatePreview()">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" name="last_name" 
+                                        value="{% if is_edit %}{{ profile.last_name }}{% endif %}" 
+                                        oninput="updatePreview()">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" 
+                                        value="{% if is_edit %}{{ profile.email }}{% endif %}" 
+                                        oninput="updatePreview()">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" name="phone" 
+                                        value="{% if is_edit %}{{ profile.phone }}{% endif %}" 
+                                        oninput="updatePreview()">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">LinkedIn</label>
+                                    <input type="url" class="form-control" name="linkedin" 
+                                        value="{% if is_edit %}{{ profile.linkedin_id }}{% endif %}" 
+                                        placeholder="https://linkedin.com/in/yourprofile" oninput="updatePreview()">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Professional Summary</label>
+                                    <textarea class="form-control" name="objective" rows="2" 
+                                        oninput="updatePreview()">{% if is_edit %}{{ profile.summary }}{% endif %}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <button type="button" class="btn btn-primary btn-action" onclick="nextStep(1, 2)">
+                            Next <i class="fas fa-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Education -->
+                <div class="form-step" id="step2">
+                    <div class="section-card">
+                        <div class="section-header d-flex justify-content-between align-items-center">
+                            <span>Education</span>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addEducation()">
+                                <i class="fas fa-plus me-1"></i> Add
+                            </button>
+                        </div>
+                        <div class="section-body" id="education-section">
+                            {% if is_edit and profile.education %}
+                                {% for edu in profile.education %}
+                                    <div class="dynamic-item">
+                                        <button type="button" class="remove-btn" onclick="removeSection(this)">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Institution</label>
+                                                <input type="text" class="form-control" name="education_{{ forloop.counter0 }}_school_college" 
+                                                    value="{{ edu.school_college }}" oninput="updatePreview()">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Degree</label>
+                                                <input type="text" class="form-control" name="education_{{ forloop.counter0 }}_degree" 
+                                                    value="{{ edu.degree }}" oninput="updatePreview()">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Start Date</label>
+                                                <input type="text" class="form-control" name="education_{{ forloop.counter0 }}_start_date" 
+                                                    value="{{ edu.start_date }}" placeholder="YYYY" oninput="updatePreview()">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">End Date</label>
+                                                <input type="text" class="form-control" name="education_{{ forloop.counter0 }}_end_date" 
+                                                    value="{{ edu.end_date }}" placeholder="YYYY or Present" oninput="updatePreview()">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">GPA/Score</label>
+                                                <input type="text" class="form-control" name="education_{{ forloop.counter0 }}_percentage_cgpa" 
+                                                    value="{{ edu.percentage_cgpa }}" oninput="updatePreview()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="dynamic-item">
+                                    <button type="button" class="remove-btn" onclick="removeSection(this)">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Institution</label>
+                                            <input type="text" class="form-control" name="education_0_school_college" oninput="updatePreview()">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Degree</label>
+                                            <input type="text" class="form-control" name="education_0_degree" oninput="updatePreview()">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Start Date</label>
+                                            <input type="text" class="form-control" name="education_0_start_date" placeholder="YYYY" oninput="updatePreview()">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">End Date</label>
+                                            <input type="text" class="form-control" name="education_0_end_date" placeholder="YYYY or Present" oninput="updatePreview()">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">GPA/Score</label>
+                                            <input type="text" class="form-control" name="education_0_percentage_cgpa" oninput="updatePreview()">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <button type="button" class="btn btn-outline-secondary btn-action" onclick="prevStep(2, 1)">
+                            <i class="fas fa-arrow-left me-1"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary btn-action" onclick="nextStep(2, 3)">
+                            Next <i class="fas fa-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Experience -->
+                <div class="form-step" id="step3">
+                    <div class="section-card">
+                        <div class="section-header d-flex justify-content-between align-items-center">
+                            <span>Work Experience</span>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addExperience()">
+                                <i class="fas fa-plus me-1"></i> Add
+                            </button>
+                        </div>
+                        <div class="section-body" id="experience-section">
+                            {% if is_edit and profile.experience %}
+                                {% for exp in profile.experience %}
+                                    <div class="dynamic-item">
+                                        <button type="button" class="remove-btn" onclick="removeSection(this)">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Company</label>
+                                                <input type="text" class="form-control" name="experience_{{ forloop.counter0 }}_company_name" 
+                                                    value="{{ exp.company_name }}" oninput="updatePreview()">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Position</label>
+                                                <input type="text" class="form-control" name="experience_{{ forloop.counter0 }}_role" 
+                                                    value="{{ exp.role }}" oninput="updatePreview()">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Start Date</label>
+                                                <input type="text" class="form-control" name="experience_{{ forloop.counter0 }}_start_date" 
+                                                    value="{{ exp.start_date }}" placeholder="MM/YYYY" oninput="updatePreview()">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">End Date</label>
+                                                <input type="text" class="form-control" name="experience_{{ forloop.counter0 }}_end_date" 
+                                                    value="{{ exp.end_date }}" placeholder="MM/YYYY or Present" oninput="updatePreview()">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Description</label>
+                                                <textarea class="form-control" name="experience_{{ forloop.counter0 }}_description" 
+                                                    rows="2" oninput="updatePreview()">{{ exp.description }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="dynamic-item">
+                                    <button type="button" class="remove-btn" onclick="removeSection(this)">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Company</label>
+                                            <input type="text" class="form-control" name="experience_0_company_name" oninput="updatePreview()">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Position</label>
+                                            <input type="text" class="form-control" name="experience_0_role" oninput="updatePreview()">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Start Date</label>
+                                            <input type="text" class="form-control" name="experience_0_start_date" placeholder="MM/YYYY" oninput="updatePreview()">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">End Date</label>
+                                            <input type="text" class="form-control" name="experience_0_end_date" placeholder="MM/YYYY or Present" oninput="updatePreview()">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Description</label>
+                                            <textarea class="form-control" name="experience_0_description" rows="2" oninput="updatePreview()"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <button type="button" class="btn btn-outline-secondary btn-action" onclick="prevStep(3, 2)">
+                            <i class="fas fa-arrow-left me-1"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary btn-action" onclick="nextStep(3, 4)">
+                            Next <i class="fas fa-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Projects -->
+                <div class="form-step" id="step4">
+                    <div class="section-card">
+                        <div class="section-header d-flex justify-content-between align-items-center">
+                            <span>Projects</span>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addProject()">
+                                <i class="fas fa-plus me-1"></i> Add
+                            </button>
+                        </div>
+                        <div class="section-body" id="project-section">
+                            {% if is_edit and profile.projects %}
+                                {% for proj in profile.projects %}
+                                    <div class="dynamic-item">
+                                        <button type="button" class="remove-btn" onclick="removeSection(this)">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <div class="row g-2">
+                                            <div class="col-12">
+                                                <label class="form-label">Project Name</label>
+                                                <input type="text" class="form-control" name="project_{{ forloop.counter0 }}_project_name" 
+                                                    value="{{ proj.project_name }}" oninput="updatePreview()">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Technologies Used</label>
+                                                <input type="text" class="form-control" name="project_{{ forloop.counter0 }}_tech_stack" 
+                                                    value="{{ proj.tech_stack }}" placeholder="Python, Django, React, etc." oninput="updatePreview()">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Description</label>
+                                                <textarea class="form-control" name="project_{{ forloop.counter0 }}_description" 
+                                                    rows="2" oninput="updatePreview()">{{ proj.description }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="dynamic-item">
+                                    <button type="button" class="remove-btn" onclick="removeSection(this)">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <div class="row g-2">
+                                        <div class="col-12">
+                                            <label class="form-label">Project Name</label>
+                                            <input type="text" class="form-control" name="project_0_project_name" oninput="updatePreview()">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Technologies Used</label>
+                                            <input type="text" class="form-control" name="project_0_tech_stack" placeholder="Python, Django, React, etc." oninput="updatePreview()">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Description</label>
+                                            <textarea class="form-control" name="project_0_description" rows="2" oninput="updatePreview()"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <button type="button" class="btn btn-outline-secondary btn-action" onclick="prevStep(4, 3)">
+                            <i class="fas fa-arrow-left me-1"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary btn-action" onclick="nextStep(4, 5)">
+                            Next <i class="fas fa-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Skills & More -->
+                <div class="form-step" id="step5">
+                    <div class="section-card">
+                        <div class="section-header">Skills & Additional Information</div>
+                        <div class="section-body">
+                            <div class="mb-2">
+                                <label class="form-label">Skills (one per line)</label>
+                                <textarea class="form-control" name="skills" rows="3" 
+                                    oninput="updatePreview()">{% if is_edit %}{{ profile.skills }}{% endif %}</textarea>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Certifications</label>
+                                <textarea class="form-control" name="certifications" rows="2" 
+                                    oninput="updatePreview()">{% if is_edit %}{{ profile.certifications }}{% endif %}</textarea>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <button type="button" class="btn btn-outline-secondary btn-action" onclick="prevStep(5, 4)">
+                            <i class="fas fa-arrow-left me-1"></i> Back
+                        </button>
+                        <button type="submit" class="btn btn-success btn-action" id="submitBtn">
+                            {% if is_edit %}Update{% else %}Generate{% endif %} <i class="fas fa-file-pdf ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Resume Preview Side Panel -->
+        <div class="resume-preview">
+            {% include 'pdf/resume_preview.html' %}
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="previewModalLabel">Resume Preview</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div id="previewContent" class="resume-preview-container">
+                    {% include 'pdf/resume_preview.html' %}
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <div>
+                    <a id="listBtn" href="/list/" class="btn btn-outline-primary">
+                        <i class="fas fa-list me-1"></i> My Resumes
+                    </a>
+                </div>
+                <div>
+                    <a id="downloadBtn" href="#" class="btn btn-success me-2">
+                        <i class="fas fa-download me-1"></i> Download PDF
+                    </a>
+                    <a id="editBtn" href="#" class="btn btn-primary">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'pdf/generate.js' %}"></script>
+{% endblock %}

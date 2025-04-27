@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user_profile.first_name }} {{ user_profile.last_name }} - Resume</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #f8f9fc;
+            --success: #1cc88a;
+            --light: #f8f9fa;
+        }
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .resume-preview {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #333;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .preview-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .preview-contact {
+            text-align: right;
+        }
+        .preview-section {
+            margin-bottom: 1.5rem;
+        }
+        .preview-section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.3rem;
+            margin-bottom: 1rem;
+        }
+        .preview-item {
+            margin-bottom: 1rem;
+        }
+        .preview-item-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+        }
+        .preview-item-title {
+            font-size: 1.1rem;
+        }
+        .preview-item-date {
+            color: #666;
+        }
+        .preview-item-subtitle {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 0.3rem;
+        }
+        .preview-item-content {
+            margin-top: 0.5rem;
+        }
+        .preview-item-content ul {
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+        }
+        .preview-item-content li {
+            margin-bottom: 0.3rem;
+        }
+        .preview-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .skill-tag {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .social-link {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .template-switcher {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 6px;
+            display: flex;
+            gap: 5px;
+            z-index: 1000;
+        }
+        .template-switcher a {
+            padding: 5px 10px;
+            font-size: 11pt;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        @media print {
+            body {
+                background-color: white !important;
+                padding: 0 !important;
+            }
+            .resume-preview {
+                box-shadow: none !important;
+                padding: 1rem !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+            }
+            .template-switcher {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-preview">
+        <div class="preview-header">
+            <div>
+                <div class="preview-name">{{ user_profile.first_name }} {{ user_profile.last_name }}</div>
+            </div>
+            <div class="preview-contact">
+                <div>{{ user_profile.phone }} | {{ user_profile.email }}</div>
+                <div class="social-links">
+                    {% if user_profile.linkedin_id %}<a href="https://linkedin.com/in/{{ user_profile.linkedin_id }}" class="social-link" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>{% endif %}
+                </div>
+            </div>
+        </div>
+        
+        {% if user_profile.summary %}
+        <div class="preview-section">
+            <div class="preview-section-title">Summary</div>
+            <div class="preview-item-content">
+                {{ user_profile.summary }}
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Education</div>
+            {% for edu in user_profile.education %}
+            <div class="preview-item">
+                <div class="preview-item-header">
+                    <span class="preview-item-title">{{ edu.degree|default:"Degree" }}</span>
+                    <span class="preview-item-date">
+                        {% if edu.start_date %}{{ edu.start_date }}{% endif %}
+                        {% if edu.end_date %} – {{ edu.end_date }}{% endif %}
+                    </span>
+                </div>
+                <div class="preview-item-subtitle">{{ edu.school_college|default:"Institution" }}</div>
+                {% if edu.percentage_cgpa %}<div class="preview-item-content">Score: {{ edu.percentage_cgpa }}{% if edu.percentage_cgpa|floatformat:"0"|add:"0" <= 10 %} CGPA{% else %}%{% endif %}</div>{% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Experience</div>
+            {% for exp in user_profile.experience %}
+            <div class="preview-item">
+                <div class="preview-item-header">
+                    <span class="preview-item-title">{{ exp.role|default:"Position" }}</span>
+                    <span class="preview-item-date">
+                        {% if exp.start_date %}{{ exp.start_date }}{% endif %}
+                        {% if exp.end_date %} – {{ exp.end_date }}{% endif %}
+                    </span>
+                </div>
+                <div class="preview-item-subtitle">{{ exp.company_name|default:"Company" }}</div>
+                <div class="preview-item-content">
+                    <ul>
+                        {% if exp.description %}
+                            {% for bullet in exp.description.splitlines %}
+                                {% if bullet.strip %}<li>{{ bullet }}</li>{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Skills</div>
+            <div class="preview-skills">
+                {% for skill in user_profile.skills.splitlines %}
+                    {% if skill.strip %}<span class="skill-tag">{{ skill }}</span>{% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-section-title">Projects</div>
+            {% for project in user_profile.projects %}
+            <div class="preview-item">
+                <div class="preview-item-header">
+                    <span class="preview-item-title">{{ project.project_name|default:"Project" }}</span>
+                    {% if project.start_date or project.end_date %}
+                    <span class="preview-item-date">
+                        {% if project.start_date %}{{ project.start_date }}{% endif %}
+                        {% if project.end_date %} – {{ project.end_date }}{% endif %}
+                    </span>
+                    {% endif %}
+                </div>
+                {% if project.tech_stack %}<div class="preview-item-subtitle">Tech: {{ project.tech_stack }}</div>{% endif %}
+                <div class="preview-item-content">
+                    <ul>
+                        {% if project.description %}
+                            {% for bullet in project.description.splitlines %}
+                                {% if bullet.strip %}<li>{{ bullet }}</li>{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if user_profile.certifications %}
+        <div class="preview-section">
+            <div class="preview-section-title">Certifications</div>
+            <div class="preview-item-content">
+                <ul>
+                    {% for cert in user_profile.certifications.splitlines %}
+                        {% if cert.strip %}<li>{{ cert }}</li>{% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        
+
+        
+
+        
+    </div>
+</body>
+</html>

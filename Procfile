@@ -1,0 +1,1 @@
+web: gunicorn mypdf1.wsgi
