@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-import django_heroku
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-hol)x2g*rptg_m3=&d+%_vxcbwt9yk!k2u-qne_73(scjl5x(i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']  # Allow all hosts for development; restrict in production
 
 
 # Application definition
@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise middleware
 ]
 
 ROOT_URLCONF = 'mypdf1.urls'
@@ -164,5 +165,4 @@ WKHTMLTOPDF_CMD = '/usr/local/bin/wkhtmltopdf'
 
 
 
-# Activate Django-Heroku.
-django_heroku.settings(locals())
+

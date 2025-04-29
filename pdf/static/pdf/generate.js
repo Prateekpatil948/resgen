@@ -168,7 +168,6 @@ function updatePreview() {
     const email = document.querySelector('input[name="email"]')?.value || '';
     const phone = document.querySelector('input[name="phone"]')?.value || '';
     const linkedin = document.querySelector('input[name="linkedin"]')?.value || '';
-    const github = document.querySelector('input[name="github"]')?.value || '';
     
     // Update contact info based on template
     if (template === '2') {
