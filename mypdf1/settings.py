@@ -84,6 +84,14 @@ DATABASES = {
     )
 }
 
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgresql://resgendb_user:JrFjIxZ8g3AUClsdLBcNq0M7excqcc7N@dpg-d08a8249c44c73bnocng-a.oregon-postgres.render.com/resgendb',
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

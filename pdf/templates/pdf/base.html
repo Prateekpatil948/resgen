@@ -3,12 +3,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{% block title %}Resume Generator{% endblock %}</title>
     <link rel="icon" href="{% static 'images/logonew.png' %}" type="image/png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         /* ========== BASE STYLES ========== */
         body {
@@ -102,6 +103,7 @@
             display: flex;
             align-items: center;
             border-radius: 0 !important;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .nav-link::after {
@@ -116,13 +118,13 @@
             opacity: 0;
         }
 
-        .nav-link:hover {
+        .nav-link:hover, .nav-link:focus {
             color: #4f46e5;
             background-color: rgba(79, 70, 229, 0.08);
             transform: translateY(-1px);
         }
 
-        .nav-link:hover::after {
+        .nav-link:hover::after, .nav-link:focus::after {
             left: 1.5rem;
             right: 1.5rem;
             opacity: 1;
@@ -133,7 +135,7 @@
             transition: all 0.3s ease;
         }
 
-        .nav-link:hover i {
+        .nav-link:hover i, .nav-link:focus i {
             transform: translateX(4px) scale(1.1);
             color: #4f46e5;
         }
@@ -170,6 +172,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .dropdown-item::before {
@@ -183,13 +186,13 @@
             transition: all 0.4s ease;
         }
 
-        .dropdown-item:hover {
+        .dropdown-item:hover, .dropdown-item:focus {
             color: #4f46e5;
             padding-left: 1.75rem;
             background-color: transparent;
         }
 
-        .dropdown-item:hover::before {
+        .dropdown-item:hover::before, .dropdown-item:focus::before {
             left: 100%;
         }
 
@@ -212,9 +215,10 @@
             font-weight: 500;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
             box-shadow: none !important;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .btn-nav:hover {
+        .btn-nav:hover, .btn-nav:focus {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
         }
@@ -230,6 +234,8 @@
             border: none;
             padding: 0.5rem;
             transition: all 0.3s ease;
+            font-size: 1.25rem;
+            color: #4f46e5;
         }
 
         .navbar-toggler:hover {
@@ -238,6 +244,83 @@
 
         .navbar-toggler:focus {
             box-shadow: 0 0 0 2px #4f46e5;
+        }
+
+        /* ========== MOBILE STYLES ========== */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 50px;
+            }
+            
+            .navbar-custom {
+                max-height: 50px;
+            }
+            
+            .container-fluid {
+                padding: 0 1rem;
+            }
+            
+            .navbar-brand {
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+            }
+            
+            .navbar-brand img {
+                height: 22px;
+            }
+            
+            .nav-link {
+                padding: 0.8rem 1rem !important;
+                font-size: 0.9rem;
+            }
+            
+            .nav-link::after, 
+            .nav-link.active::after {
+                left: 1rem !important;
+                right: 1rem !important;
+            }
+            
+            .content-container {
+                padding: 1rem;
+            }
+            
+            .navbar-text {
+                padding: 0 0.5rem;
+                font-size: 0.9rem;
+                display: block;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .btn-nav {
+                padding: 0.4rem 0.8rem !important;
+                font-size: 0.85rem;
+                margin: 0.25rem 0;
+                width: 100%;
+            }
+            
+            .navbar-collapse {
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                padding: 0.5rem 1rem;
+                margin-top: 0.5rem;
+                border-radius: 4px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-item {
+                margin: 0.2rem 0;
+            }
+            
+            .d-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+        }
+
+        /* ===== TOUCH FEEDBACK ===== */
+        .nav-link:active, .btn-nav:active, .dropdown-item:active {
+            transform: scale(0.98);
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -250,8 +333,8 @@
                 <img src="{% static 'images/logonew.png' %}" alt="Logo">
                 ResGen
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto">
