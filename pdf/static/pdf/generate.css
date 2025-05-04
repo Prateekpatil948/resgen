@@ -735,6 +735,103 @@
     font-size: 0.7rem;
 }
 
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .resume-builder-container {
+        flex-direction: column;
+    }
+    
+    .resume-form,
+    .resume-preview {
+        width: 100%;
+        order: initial;
+        position: relative;
+        max-height: none;
+        margin-bottom: 1rem;
+    }
+    
+    .template-2-preview {
+        flex-direction: column;
+    }
+    
+    .template-2-preview .sidebar,
+    .template-2-preview .main-content {
+        width: 100%;
+    }
+    
+    .template-5-preview .two-columns {
+        flex-direction: column;
+    }
+    
+    .template-5-preview .left-column,
+    .template-5-preview .right-column {
+        width: 100%;
+        padding: 0;
+    }
+    
+    .template-5-preview .right-column {
+        border-left: none;
+        border-top: 2px solid #2c3e50;
+        margin-top: 1rem;
+        padding-top: 1rem;
+    }
+    
+    .resume-preview-container {
+        max-height: 60vh;
+    }
+    
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+
+    .step-indicator {
+        overflow-x: auto;
+        white-space: nowrap;
+        justify-content: flex-start;
+        padding-bottom: 0.5rem;
+    }
+
+    .step {
+        min-width: 50px;
+    }
+
+    .step-title {
+        font-size: 0.6rem;
+    }
+
+    .form-step {
+        padding: 0.8rem;
+    }
+
+    .dynamic-item {
+        padding: 0.6rem;
+    }
+
+    .btn-action {
+        width: 100%;
+        margin: 0.3rem 0;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-footer > div {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+}
+
 /* Desktop Styles */
 @media (min-width: 992px) {
     .resume-builder-container {
