@@ -82,7 +82,6 @@
         background: white;
         position: relative;
         flex-grow: 1;
-        cursor: pointer;
     }
     
     .template-thumbnail {
@@ -92,6 +91,7 @@
         border-radius: 6px;
         border: 1px solid rgba(99, 102, 241, 0.1);
         background: white;
+        cursor: pointer;
     }
     
     .template-info {
@@ -123,6 +123,7 @@
         transition: all 0.2s ease;
         border: none;
         width: 100%;
+        cursor: pointer;
     }
     
     .btn-select:hover {
@@ -176,14 +177,28 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Handle template selection
         document.querySelectorAll('.template-card').forEach((card, index) => {
+            // Click on card (except thumbnail and button)
             card.addEventListener('click', function(e) {
-                if (e.target.classList.contains('btn-select')) return;
+                if (e.target.classList.contains('template-thumbnail') || 
+                    e.target.classList.contains('btn-select') ||
+                    e.target.closest('.badge-tag')) {
+                    return;
+                }
                 window.location.href = "{% url 'generate_resume' %}?template=" + (index + 1);
             });
             
+            // Click on template button
             card.querySelector('.btn-select').addEventListener('click', function(e) {
                 e.stopPropagation();
                 window.location.href = "{% url 'generate_resume' %}?template=" + (index + 1);
+            });
+        });
+
+        // Handle thumbnail clicks separately
+        document.querySelectorAll('.template-thumbnail').forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', function(e) {
+                e.stopPropagation();
+                window.location.href = "{% url 'template_preview' %}?template=" + (index + 1);
             });
         });
     });
