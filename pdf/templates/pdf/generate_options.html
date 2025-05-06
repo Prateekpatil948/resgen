@@ -8,13 +8,11 @@
     :root {
         --primary: #6c63ff;
         --primary-light: #a78bfa;
-        --gradient-1: linear-gradient(135deg, #a5b4fc 0%, #c7d2fe 100%);
+        --gradient-1: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
         --gradient-2: linear-gradient(135deg, #818cf8 0%, #a5b4fc 100%);
-        --gradient-3: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%);
-        --content-bg: #f8fafc;
+        --content-bg: #ffffff;
         --text-color: #1e293b;
-        --glass-bg: rgba(255, 255, 255, 0.9);
-        --glass-border: rgba(255, 255, 255, 0.3);
+        --glass-bg: rgba(255, 255, 255, 0.95);
     }
 
     body {
@@ -22,107 +20,65 @@
         padding: 0;
         min-height: 100vh;
         background: var(--gradient-1);
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Inter', sans-serif;
         color: var(--text-color);
-        animation: gradientShift 15s ease infinite;
-        background-size: 200% 200%;
     }
 
     .options-container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 100vh;
-        padding: 2rem 1rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .options-container::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: radial-gradient(circle at 20% 50%, rgba(167, 139, 250, 0.1) 0%, transparent 50%);
-        z-index: 0;
+        padding: 1.5rem 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
     }
 
     .template-header {
         text-align: center;
-        margin-bottom: 2rem;
-        z-index: 1;
+        margin-bottom: 1.5rem;
         max-width: 600px;
     }
     
     .template-header h1 {
         font-weight: 700;
-        font-size: 2rem;
-        margin-bottom: 0.75rem;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
         color: var(--text-color);
-        position: relative;
-        display: inline-block;
-    }
-    
-    .template-header h1::after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 3px;
-        background: var(--gradient-2);
-        border-radius: 3px;
     }
     
     .template-header p {
         color: #64748b;
-        font-size: 1rem;
-        line-height: 1.6;
-    }
-    
-    .template-grid-container {
-        width: 100%;
-        max-width: 1100px;
-        background: var(--glass-bg);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 20px;
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
-        padding: 2rem;
-        z-index: 1;
+        font-size: 0.95rem;
+        line-height: 1.5;
     }
     
     .template-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.25rem;
+        width: 100%;
     }
     
     .template-card {
         background: white;
-        border-radius: 16px;
+        border-radius: 12px;
         overflow: hidden;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        height: 380px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        height: 320px;
         display: flex;
         flex-direction: column;
     }
     
     .template-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15);
-        border-color: rgba(99, 102, 241, 0.3);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(99, 102, 241, 0.1);
     }
     
     .template-preview {
-        height: 200px;
-        padding: 1rem;
+        height: 160px;
+        padding: 0.75rem;
         background: white;
         position: relative;
         flex-grow: 1;
@@ -133,118 +89,83 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
-        border-radius: 8px;
+        border-radius: 6px;
         border: 1px solid rgba(99, 102, 241, 0.1);
         background: white;
-        transition: transform 0.3s ease;
-    }
-    
-    .template-card:hover .template-thumbnail {
-        transform: scale(1.05);
     }
     
     .template-info {
-        padding: 1.25rem;
+        padding: 1rem;
         text-align: center;
         border-top: 1px solid #f1f5f9;
     }
     
     .template-name {
         font-weight: 600;
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
-        color: var(--text-color);
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
     }
     
     .template-desc {
         color: #64748b;
-        font-size: 0.85rem;
-        margin-bottom: 1.25rem;
-        line-height: 1.5;
+        font-size: 0.8rem;
+        margin-bottom: 0.75rem;
+        line-height: 1.4;
     }
     
     .btn-select {
         background: var(--gradient-2);
         color: white;
-        padding: 0.75rem;
-        border-radius: 10px;
-        font-size: 0.9rem;
+        padding: 0.5rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
         font-weight: 500;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         border: none;
         width: 100%;
-        box-shadow: 0 4px 15px rgba(129, 140, 248, 0.3);
     }
     
     .btn-select:hover {
-        background: var(--gradient-3);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(167, 139, 250, 0.4);
+        opacity: 0.9;
+        box-shadow: 0 4px 12px rgba(129, 140, 248, 0.3);
     }
     
     .badge-tag {
         position: absolute;
-        top: 12px;
-        right: 12px;
+        top: 8px;
+        right: 8px;
         background: white;
-        padding: 0.4rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.7rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: 16px;
+        font-size: 0.65rem;
         font-weight: 600;
         color: var(--primary);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-        z-index: 2;
-    }
-    
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     /* Responsive Design */
-    @media (max-width: 992px) {
-        .template-grid {
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        }
-    }
-    
     @media (max-width: 768px) {
-        .template-grid-container {
-            padding: 1.5rem;
-        }
-        
         .template-grid {
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.25rem;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
         }
         
         .template-card {
-            height: 360px;
+            height: 300px;
         }
         
         .template-preview {
-            height: 180px;
+            height: 150px;
         }
     }
     
     @media (max-width: 576px) {
         .template-header h1 {
-            font-size: 1.6rem;
-        }
-        
-        .template-header p {
-            font-size: 0.95rem;
+            font-size: 1.5rem;
         }
         
         .template-grid {
-            grid-template-columns: 1fr;
-            max-width: 340px;
-            margin: 0 auto;
-        }
-        
-        .template-card {
-            height: 340px;
+            grid-template-columns: 1fr 1fr;
         }
     }
 </style>
@@ -254,24 +175,15 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Handle template selection
-        const templateCards = document.querySelectorAll('.template-card');
-        
-        templateCards.forEach((card, index) => {
-            // Set click handler for the entire card
+        document.querySelectorAll('.template-card').forEach((card, index) => {
             card.addEventListener('click', function(e) {
-                // Ignore if clicked on the "Use Template" button
                 if (e.target.classList.contains('btn-select')) return;
-                
-                const templateNumber = index + 1;
-                window.location.href = "{% url 'generate_resume' %}?template=" + templateNumber;
+                window.location.href = "{% url 'generate_resume' %}?template=" + (index + 1);
             });
             
-            // Set click handler specifically for the "Use Template" button
-            const btn = card.querySelector('.btn-select');
-            btn.addEventListener('click', function(e) {
+            card.querySelector('.btn-select').addEventListener('click', function(e) {
                 e.stopPropagation();
-                const templateNumber = index + 1;
-                window.location.href = "{% url 'generate_resume' %}?template=" + templateNumber;
+                window.location.href = "{% url 'generate_resume' %}?template=" + (index + 1);
             });
         });
     });
@@ -281,75 +193,73 @@
 {% block content %}
 <div class="options-container">
     <div class="template-header">
-        <h1>Select Your Template</h1>
-        <p>Choose a professional design that best showcases your skills and experience. All templates are ATS-friendly and optimized for readability.</p>
+        <h1>Select Your Resume Template</h1>
+        <p>Choose a professional design that best showcases your skills and experience.</p>
     </div>
 
-    <div class="template-grid-container">
-        <div class="template-grid">
-            <!-- Template 1 - Classic -->
-            <div class="template-card">
-                <div class="template-preview">
-                    <span class="badge-tag">Most Popular</span>
-                    <img src="{% static 'images/template1-thumbnail.png' %}" class="template-thumbnail" alt="Classic Template">
-                </div>
-                <div class="template-info">
-                    <div class="template-name">Classic</div>
-                    <div class="template-desc">Timeless single-column layout suitable for all industries and experience levels</div>
-                    <button class="btn-select">Use This Template</button>
-                </div>
+    <div class="template-grid">
+        <!-- Template 1 - Classic -->
+        <div class="template-card">
+            <div class="template-preview">
+                <span class="badge-tag">Popular</span>
+                <img src="{% static 'images/template1-thumbnail.png' %}" class="template-thumbnail" alt="Classic Template">
             </div>
-            
-            <!-- Template 2 - Modern -->
-            <div class="template-card">
-                <div class="template-preview">
-                    <span class="badge-tag">Trending</span>
-                    <img src="{% static 'images/template2-thumbnail.png' %}" class="template-thumbnail" alt="Modern Template">
-                </div>
-                <div class="template-info">
-                    <div class="template-name">Modern</div>
-                    <div class="template-desc">Contemporary design with balanced visual hierarchy and clean sections</div>
-                    <button class="btn-select">Use This Template</button>
-                </div>
+            <div class="template-info">
+                <div class="template-name">Classic</div>
+                <div class="template-desc">Timeless layout for all industries</div>
+                <button class="btn-select">Use Template</button>
             </div>
+        </div>
+        
+        <!-- Template 2 - Modern -->
+        <div class="template-card">
+            <div class="template-preview">
+                <span class="badge-tag">Trending</span>
+                <img src="{% static 'images/template2-thumbnail.png' %}" class="template-thumbnail" alt="Modern Template">
+            </div>
+            <div class="template-info">
+                <div class="template-name">Modern</div>
+                <div class="template-desc">Contemporary design with clean sections</div>
+                <button class="btn-select">Use Template</button>
+            </div>
+        </div>
 
-            <!-- Template 3 - Professional -->
-            <div class="template-card">
-                <div class="template-preview">
-                    <span class="badge-tag">New</span>
-                    <img src="{% static 'images/template3-thumbnail.png' %}" class="template-thumbnail" alt="Professional Template">
-                </div>
-                <div class="template-info">
-                    <div class="template-name">Professional</div>
-                    <div class="template-desc">Sleek layout optimized for technical fields and corporate environments</div>
-                    <button class="btn-select">Use This Template</button>
-                </div>
+        <!-- Template 3 - Professional -->
+        <div class="template-card">
+            <div class="template-preview">
+                <span class="badge-tag">New</span>
+                <img src="{% static 'images/template3-thumbnail.png' %}" class="template-thumbnail" alt="Professional Template">
             </div>
-            
-            <!-- Template 4 - Elegant -->
-            <div class="template-card">
-                <div class="template-preview">
-                    <span class="badge-tag">Executive</span>
-                    <img src="{% static 'images/template4-thumbnail.png' %}" class="template-thumbnail" alt="Elegant Template">
-                </div>
-                <div class="template-info">
-                    <div class="template-name">Elegant</div>
-                    <div class="template-desc">Sophisticated management style with premium typography and spacing</div>
-                    <button class="btn-select">Use This Template</button>
-                </div>
+            <div class="template-info">
+                <div class="template-name">Professional</div>
+                <div class="template-desc">Optimized for technical fields</div>
+                <button class="btn-select">Use Template</button>
             </div>
-            
-            <!-- Template 5 - Sophia -->
-            <div class="template-card">
-                <div class="template-preview">
-                    <span class="badge-tag">Creative</span>
-                    <img src="{% static 'images/template5-thumbnail.png' %}" class="template-thumbnail" alt="Sophia Template">
-                </div>
-                <div class="template-info">
-                    <div class="template-name">Creative</div>
-                    <div class="template-desc">Visually engaging two-column layout with icons for creative professionals</div>
-                    <button class="btn-select">Use This Template</button>
-                </div>
+        </div>
+        
+        <!-- Template 4 - Elegant -->
+        <div class="template-card">
+            <div class="template-preview">
+                <span class="badge-tag">Executive</span>
+                <img src="{% static 'images/template4-thumbnail.png' %}" class="template-thumbnail" alt="Elegant Template">
+            </div>
+            <div class="template-info">
+                <div class="template-name">Elegant</div>
+                <div class="template-desc">Sophisticated management style</div>
+                <button class="btn-select">Use Template</button>
+            </div>
+        </div>
+        
+        <!-- Template 5 - Creative -->
+        <div class="template-card">
+            <div class="template-preview">
+                <span class="badge-tag">Creative</span>
+                <img src="{% static 'images/template5-thumbnail.png' %}" class="template-thumbnail" alt="Creative Template">
+            </div>
+            <div class="template-info">
+                <div class="template-name">Creative</div>
+                <div class="template-desc">Visually engaging layout</div>
+                <button class="btn-select">Use Template</button>
             </div>
         </div>
     </div>
