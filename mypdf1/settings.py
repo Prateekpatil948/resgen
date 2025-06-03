@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME', 'resgen'),
         'USER': os.getenv('DB_USER', 'resgen_owner'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),  # Must come from environment
+        'PASSWORD': 'npg_vNhk8TUgF1zt' # Must come from environment
         'HOST': os.getenv('DB_HOST', 'ep-jolly-bar-a8dtlllr-pooler.eastus2.azure.neon.tech'),
         'PORT': os.getenv('DB_PORT', '5432'),
         'OPTIONS': {
