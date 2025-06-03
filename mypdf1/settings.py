@@ -78,12 +78,25 @@ WSGI_APPLICATION = 'mypdf1.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.environ.get('DATABASE_URL')
+#     )
+# }
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'resgen'),
+        'USER': os.getenv('DB_USER', 'resgen_owner'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),  # Must come from environment
+        'HOST': os.getenv('DB_HOST', 'ep-jolly-bar-a8dtlllr-pooler.eastus2.azure.neon.tech'),
+        'PORT': os.getenv('DB_PORT', '5432'),
+        'OPTIONS': {
+            'sslmode': 'require',
+            'options': 'endpoint=ep-jolly-bar-a8dtlllr-pooler'
+        },
+    }
 }
-
 # DATABASES = {
 #     'default': dj_database_url.config(
 #         default='postgresql://resgendb_user:JrFjIxZ8g3AUClsdLBcNq0M7excqcc7N@dpg-d08a8249c44c73bnocng-a.oregon-postgres.render.com/resgendb',
