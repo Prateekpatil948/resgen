@@ -375,7 +375,7 @@ def delete_resume(request, profile_id):
 # Resume Analysis Views
 # ======================
 
-# @login_required
+@login_required
 def analyze_uploaded_resume(request):
     """Analyze uploaded PDF resume with AI."""
     if request.method == 'POST':
@@ -438,7 +438,7 @@ def analyze_uploaded_resume(request):
     return render(request, 'pdf/resume_score.html')
 
 
-# @login_required
+@login_required
 def analyze_profile_resume(request, profile_id):
     """Analyze existing profile resume with AI."""
     profile = get_object_or_404(Profile, id=profile_id, user=request.user)
