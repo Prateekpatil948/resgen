@@ -16,7 +16,7 @@ def evaluate_resume_with_gemini(resume_text: str, job_description: str = "") -> 
     Returns:
         dict: Dictionary with evaluation scores and insights matching the Profile model.
     """
-    model = "gemini-2.5-flash"
+    model = genai.GenerativeModel(model_name="models/gemini-1.5-flash-latest")
     
     prompt = f"""
 You are a professional resume evaluation assistant. Analyze the following resume content and provide a detailed JSON response with the following structure:
