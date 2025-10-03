@@ -16,9 +16,7 @@ def generate_ai_editing_suggestions(analysis_results: Dict[str, Any], resume_tex
     Returns:
         dict: Dictionary with AI-powered editing suggestions
     """
-    model = genai.GenerativeModel(model_name="models/gemini-2.5-flash-preview-09-2025
-
-")
+    model = genai.GenerativeModel(model_name="gemini-2.5-flash")
     
     # Extract weaknesses and suggestions from analysis
     weaknesses = analysis_results.get("weaknesses", [])
