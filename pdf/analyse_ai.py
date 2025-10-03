@@ -3,7 +3,7 @@ import json
 from typing import Dict, Any
 
 # Configure API key
-genai.configure(api_key="AIzaSyCbfbuiwHQW5rIdG_VIxg11kKeh-msIWU4")
+genai.configure(api_key="AIzaSyDqK6DM7QGtVDISupaQkrFENYYxVTP-T2A")
 
 def evaluate_resume_with_gemini(resume_text: str, job_description: str = "") -> Dict[str, Any]:
     """
