@@ -105,15 +105,15 @@ Job Description to compare against:
             "weaknesses": [],
             "suggestions": ["The analysis service is currently unavailable. Please try again later."]
         }
-    except Exception as e:
-        print("Error in resume evaluation:", e)
-        return {
-            "error": str(e),
-            "overall_score": 0,
-            "summary": "Error in analysis - service unavailable",
-            "score_metrics": {},
-            "strengths": [],
-            "weaknesses": [],
-            "suggestions": ["The analysis service encountered an error. Please try again later."]
-        }
+    # except Exception as e:
+    #     print("Error in resume evaluation:", e)
+    #     return {
+    #         "error": str(e),
+    #         "overall_score": 0,
+    #         "summary": "Error in analysis - service unavailable",
+    #         "score_metrics": {},
+    #         "strengths": [],
+    #         "weaknesses": [],
+    #         "suggestions": ["The analysis service encountered an error. Please try again later."]
+    #     }
     
