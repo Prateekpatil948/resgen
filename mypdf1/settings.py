@@ -139,6 +139,8 @@ LOGOUT_REDIRECT_URL = "welcome"
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STATICFILES_DIRS = [
+BASE_DIR / "pdf" / "static",]
 STATICFILES_STORAGE = (
     "whitenoise.storage.CompressedManifestStaticFilesStorage"
 )
