@@ -36,3 +36,4 @@ media/uploads/
 *.out
 *.pid
 *.sock
+.env
