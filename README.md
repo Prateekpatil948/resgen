@@ -5,6 +5,7 @@ A **Django-based Resume Generator** web application that allows users to create,
 
 This project provides a user-friendly interface to generate resumes based on user input. Users can enter their personal, education, work experience, skills, and other relevant details to dynamically generate a formatted resume.
 
+Live Demo : https://resgen-0uya.onrender.com/
 ---
 
 ## 🛠️ Features
